@@ -1,0 +1,40 @@
+/* stylesheet */
+.container {
+    padding-bottom: 90px;
+    }
+
+body {
+    position: relative;
+    min-height: 100vh;
+    }
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding-top: 18px;
+    background: lightcoral;
+    text-align: center;
+    margin-top: 20px;
+    }
+
+.spacer {
+    padding: 25px 0 0 0;
+    }
+
+path.line {
+    fill: none;
+    stroke: #000;
+}
+/* .bar {
+    fill: lightcoral;
+}
+
+.bar:hover {
+    fill:green;
+} */
+
+.sub-title {
+    color: black;
+}
