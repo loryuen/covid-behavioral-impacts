@@ -1,6 +1,6 @@
 // Create a map object
 var myMap = L.map("map", {
-    center: [38.778529, -109.417931],
+    center: [51.850033, -97.6500523],
     zoom: 4
   });
   
@@ -14,6 +14,10 @@ var myMap = L.map("map", {
 
 // console.log(states.forEach(d=> console.log(d.Latitude)))
 
+// Define a markerSize function that will give each city a different radius based on its population
+function markerSize(casesCount) {
+    return casesCount;
+    };
 
 // load api coronavirus cases data
 var url = "https://coronavirus-tracker-api.herokuapp.com/v2/locations?source=csbs"
@@ -22,19 +26,31 @@ d3.json(url).then(function(data) {
     console.log(locations)
     console.log(locations.length)
 
+    
 
     for (var i=0; i < locations.length; i++) {
         // var state = locations[i].province
         var state = locations[i]
         var coordinates = state.coordinates
-        console.log(state.coordinates)
+        var casesCount = state.latest.confirmed
         var location = []
         location.push(coordinates.latitude, coordinates.longitude)        
         console.log(location)
-    
-    L.marker(location)
-        .bindPopup("<h4>" + state.county + ", " + state.province + "</h4> <hr> <h5>Positive Cases: " + state.latest.confirmed + "</h5>")
+
+    // circles
+    L.circle(location, {
+        fillOpacity: 0.75,
+        color: "red",
+        fillColor: "purple",
+        radius: markerSize(locations[i].latest.confirmed)
+        })
+        .bindPopup("<h4>" + state.county + ", " + state.province + "</h4> <hr> <h5>Positive Cases: " + casesCount + "</h5>")
         .addTo(myMap);
+
+    // Markers
+    // L.marker(location)
+    //     .bindPopup("<h4>" + state.county + ", " + state.province + "</h4> <hr> <h5>Positive Cases: " + state.latest.confirmed + "</h5>")
+    //     .addTo(myMap);
     }
 
 });
