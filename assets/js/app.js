@@ -1,6 +1,6 @@
 // Define SVG area dimensions
 var svgWidth = 400;
-var svgHeight = 300;
+var svgHeight = 600;
 
 // Define the chart's margins as an object
 var margin = {
@@ -41,8 +41,8 @@ d3.json(url).then(function(nationalData) {
   nationalData.forEach(function(data) {
     data.date = parseTime(data.date);
     data.total = +data.total;
-    console.log(data.date)
-    console.log(data.total)
+    // console.log(data.date)
+    // console.log(data.total)
   });
 
   // Configure a time scale with a range between 0 and the chartWidth

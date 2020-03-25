@@ -10,69 +10,31 @@ var myMap = L.map("map", {
     id: "mapbox.streets-basic",
     accessToken: API_KEY
   }).addTo(myMap);
-  
-// Load in geojson data
-var geoData = "assets/data/states.geojson";
 
-var geojson;
 
-// Grab data with d3
-d3.json(geoData, function(data) {
+// console.log(states.forEach(d=> console.log(d.Latitude)))
 
-  // Create a new choropleth layer
-  geojson = L.choropleth(data, {
 
-    // Define what  property in the features to use
-    valueProperty: "CENSUSAREA",
+// load api coronavirus cases data
+var url = "https://coronavirus-tracker-api.herokuapp.com/v2/locations?source=csbs"
+d3.json(url).then(function(data) {
+    var locations = data.locations
+    console.log(locations)
+    console.log(locations.length)
 
-    // Set color scale
-    scale: ["#ffffb2", "#b10026"],
 
-    // Number of breaks in step range
-    steps: 10,
-
-    // q for quartile, e for equidistant, k for k-means
-    mode: "q",
-    style: {
-      // Border color
-      color: "#fff",
-      weight: 1,
-      fillOpacity: 0.8
-    },
-
-    // Binding a pop-up to each layer
-    onEachFeature: function(feature, layer) {
-      layer.bindPopup("State Name: " + feature.properties.NAME + "<br>Census Area:<br>" + feature.properties.CENSUSAREA);
+    for (var i=0; i < locations.length; i++) {
+        // var state = locations[i].province
+        var state = locations[i]
+        var coordinates = state.coordinates
+        console.log(state.coordinates)
+        var location = []
+        location.push(coordinates.latitude, coordinates.longitude)        
+        console.log(location)
+    
+    L.marker(location)
+        .bindPopup("<h4>" + state.county + ", " + state.province + "</h4> <hr> <h5>Positive Cases: " + state.latest.confirmed + "</h5>")
+        .addTo(myMap);
     }
-  }).addTo(myMap);
-
-//   // Set up the legend
-//   var legend = L.control({ position: "bottomright" });
-//   legend.onAdd = function() {
-//     var div = L.DomUtil.create("div", "info legend");
-//     var limits = geojson.options.limits;
-//     var colors = geojson.options.colors;
-//     var labels = [];
-
-//     // Add min & max
-//     var legendInfo = "<h1>Median Income</h1>" +
-//       "<div class=\"labels\">" +
-//         "<div class=\"min\">" + limits[0] + "</div>" +
-//         "<div class=\"max\">" + limits[limits.length - 1] + "</div>" +
-//       "</div>";
-
-//     div.innerHTML = legendInfo;
-
-//     limits.forEach(function(limit, index) {
-//       labels.push("<li style=\"background-color: " + colors[index] + "\"></li>");
-//     });
-
-//     div.innerHTML += "<ul>" + labels.join("") + "</ul>";
-//     return div;
-//   };
-
-//   Adding legend to the map
-//   legend.addTo(myMap);
 
 });
-  
