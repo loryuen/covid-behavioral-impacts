@@ -27,6 +27,16 @@ path.line {
     fill: none;
     stroke: #000;
 }
+
+.tooltip {
+    fill:white;
+    stroke: #000;
+}
+
+.tooltip-date, .tooltip-total {
+    font-weight: bold;
+}
+
 /* .bar {
     fill: lightcoral;
 }

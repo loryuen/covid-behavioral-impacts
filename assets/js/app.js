@@ -36,6 +36,7 @@ d3.json(url).then(function(nationalData) {
   // Print the milesData
   console.log(nationalData);
 
+  
   // Format the date and cast the total cases value to a number
   nationalData.forEach(function(data) {
     data.date = parseTime(data.date);
@@ -86,28 +87,68 @@ d3.json(url).then(function(nationalData) {
     .attr("transform", "translate(0, " + chartHeight + ")")
     .call(bottomAxis);
 
+  //////////////
+  // tool tip //
+  //////////////
+  var focus = chartGroup.append("g")
+    .attr("class", "focus")
+    .style("display", "none");
 
-///// BAR ///////
-// Append two SVG group elements to the chartGroup area,
-  // and create the bottom and left axes inside of them
-//   chartGroup.append("g")
-//     .call(leftAxis);
+  // add circle and rectangle box to focus point on line
+  focus.append("circle")
+    .attr("r", 4);
 
-//   chartGroup.append("g")
-//     .attr("transform", `translate(0, ${chartHeight})`)
-//     .call(bottomAxis);
+  focus.append("rect")
+    .attr("class", "toolip")
+    .attr("width", 100)
+    .attr("height", 50)
+    .attr("x", 10)
+    .attr("y", -22)
+    .attr("rx", 4)
+    .attr("ry", 4);
 
-//   // Create one SVG rectangle per piece of tvData
-//   // Use the linear and band scales to position each rectangle within the chart
-//   chartGroup.selectAll(".bar")
-//     .data(nationalData)
-//     .enter()
-//     .append("rect")
-//     .attr("class", "bar")
-//     .attr("x", d => xTimeScale(d.date))
-//     .attr("y", d => yLinearScale(d.total))
-//     .attr("width", xTimeScale.bandwidth())
-//     .attr("height", d => chartHeight - yLinearScale(d.total));
+  // append text to tooltip
+  focus.append("text")
+    .attr("class", "tooltip-date")
+    .attr("x", 18)
+    .attr("y", -2);
+
+  focus.append("text")
+    .attr("x", 18)
+    .attr("y", 18)
+    .text("Number of positive cases:");
+
+  focus.append("text")
+    .attr("class", "tooltip-total")
+    .attr("x", 60)
+    .attr("y", 18);
+    
+    function mousemove() {
+        var x0 = xTimeScale.invert(d3.mouse(this)[0]),
+          i = bisectDate(data, x0, 1),
+          d0 = data  [i-1],
+          d1 = data[i],
+          d = x0 - d0.date > d1.date - x0 ? d1:d0;
+        focus.attr("transform", "translate(" + x(d.date) + "," + y(d.total) + ")");
+        focus.select(".tooltip-date").text(dateFormatter(d.date));
+        focus.select(".tooltip-total").text(formatValue(d.total));
+    }
+  chartGroup.append("rect")
+    .attr("class", "overlay")
+    .attr("width", width)
+    .attr("height", height)
+    .on("mouseover", function() {
+        focus.style("display", null);
+    })
+    .on("mouseout", function() {
+        focus.style("display", "none");
+    })
+    .on("mousemove", mousemove);
+
+  
+
+
+
 
 
 
