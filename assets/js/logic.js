@@ -32,30 +32,62 @@ d3.json(url).then(function(data) {
     console.log(locations)
     console.log(locations.length)
 
-    
+    // empty lists
     var casesTot = [];
     var nyTot = [];
+    // counter
+    var x=0
 
     for (var i=0; i < locations.length; i++) {
 
+        // define variables
         var state = locations[i]
         var coordinates = state.coordinates
         var casesCount = numberFormat(state.latest.confirmed)
+        // format location to be read properly in layer
         var location = []
         location.push(coordinates.latitude, coordinates.longitude)        
-        // console.log(location)
-
+        currentStateName = locations[x].province;
         // sum up cases (push to empty list and then add) 
         casesTot.push(state.latest.confirmed)
         var sumCases = casesTot.reduce((a, b) => a + b,0)
-        console.log(sumCases)
+
+        // console.log(`current x value: ${x}`)
 
         // test if statement by state
-        if (state.province === "New York") {
+        if (locations[x].province === locations[i].province) {
             nyTot.push(state.latest.confirmed)
-        };
-        console.log(nyTot.reduce((a,b)=>a+b,0))
+            // nyTot[currentStateName]=state.latest.confirmed;
+        }
+        else {
+            var sumNY = nyTot.reduce((a,b)=>a+b,0)
+            console.log(locations[x].province, sumNY)
+
+            x=i
+            nyTot=[]
+            if (locations[x].province === locations[i].province) {
+                nyTot.push(state.latest.confirmed)
+            }
+            else {
+                var sumNY = nyTot.reduce((a,b)=>a+b,0)
+                console.log(locations[x].province, sumNY)
+            }
+        }
         
+        // console.log(nyTot)
+        // else if (state.province === "North Carolina") {
+        //     ncTot.push(state.latest.confirmed)
+        // }
+
+        // //add up NY cases
+        // var sumNY = nyTot.reduce((a,b)=>a+b,0)
+        // console.log(sumNY)
+        
+        // increase counter by 1 
+        // console.log(`current x value: ${x}`)
+        // x+=1
+        // nyTot = []
+        // console.log(`updated x value: ${x}`)
 
     // circles
     L.circle(location, {
@@ -66,11 +98,11 @@ d3.json(url).then(function(data) {
         })
         .bindPopup("<h5>" + state.county + ", " + state.province + "</h5> <hr> <h6>Confirmed Cases: " + casesCount + "</h6><br><h6>Deaths: " + state.latest.deaths + "</h6><br><h7>Last Updated: " +  state.last_updated + "</h7>")
         .addTo(myMap);
-
-    // Markers
-    // L.marker(location)
-    //     .bindPopup("<h4>" + state.county + ", " + state.province + "</h4> <hr> <h5>Positive Cases: " + state.latest.confirmed + "</h5>")
-    //     .addTo(myMap);
     }
+
+    // print totals
+    // console.log(locations[x].province, sumNY)
+    console.log(sumNY)
+    console.log(`Total cases: ${sumCases}`)
 
 });
