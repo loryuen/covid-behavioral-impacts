@@ -16,8 +16,7 @@ var myMap = L.map("map", {
 
 // // Define a markerSize function that will give each city a different radius based on its population
 function markerSize(casesCount) {
-    return casesCount * 30;
-
+    return casesCount * 20;
     };
 
 // number formatter for commas
@@ -34,7 +33,8 @@ d3.json(url).then(function(data) {
 
     // empty lists
     var casesTot = [];
-    var nyTot = [];
+    var eachCountyTot = [];
+    statesTot={};
     // counter
     var x=0
 
@@ -52,44 +52,28 @@ d3.json(url).then(function(data) {
         casesTot.push(state.latest.confirmed)
         var sumCases = casesTot.reduce((a, b) => a + b,0)
 
-        // console.log(`current x value: ${x}`)
-
-        // test if statement by state
+        // number of cases by state
         if (locations[x].province === locations[i].province) {
-            nyTot.push(state.latest.confirmed)
-            // nyTot[currentStateName]=state.latest.confirmed;
+            eachCountyTot.push(state.latest.confirmed)
         }
         else {
-            var sumNY = nyTot.reduce((a,b)=>a+b,0)
-            console.log(locations[x].province, sumNY)
+            console.log(eachCountyTot)
+            // add up cases by state and print
+            var sumCasesState = eachCountyTot.reduce((a,b)=>a+b,0)
+            console.log(locations[x].province, sumCasesState)
+            // push sumNY to dictionary as value
+            statesTot[currentStateName] = sumCasesState
 
+            // reset counter and empty list
             x=i
-            nyTot=[]
+            eachCountyTot=[]
+
             if (locations[x].province === locations[i].province) {
-                nyTot.push(state.latest.confirmed)
-            }
-            else {
-                var sumNY = nyTot.reduce((a,b)=>a+b,0)
-                console.log(locations[x].province, sumNY)
+                eachCountyTot.push(state.latest.confirmed)
             }
         }
-        
-        // console.log(nyTot)
-        // else if (state.province === "North Carolina") {
-        //     ncTot.push(state.latest.confirmed)
-        // }
 
-        // //add up NY cases
-        // var sumNY = nyTot.reduce((a,b)=>a+b,0)
-        // console.log(sumNY)
-        
-        // increase counter by 1 
-        // console.log(`current x value: ${x}`)
-        // x+=1
-        // nyTot = []
-        // console.log(`updated x value: ${x}`)
-
-    // circles
+    // circles by county
     L.circle(location, {
         fillOpacity: 0.75,
         color: "red",
@@ -101,8 +85,7 @@ d3.json(url).then(function(data) {
     }
 
     // print totals
-    // console.log(locations[x].province, sumNY)
-    console.log(sumNY)
     console.log(`Total cases: ${sumCases}`)
+    console.log(statesTot)
 
 });
