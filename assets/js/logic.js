@@ -14,10 +14,16 @@ var myMap = L.map("map", {
 
 // console.log(states.forEach(d=> console.log(d.Latitude)))
 
-// Define a markerSize function that will give each city a different radius based on its population
+// // Define a markerSize function that will give each city a different radius based on its population
 function markerSize(casesCount) {
-    return casesCount;
+    return casesCount * 30;
+
     };
+
+// number formatter for commas
+var numberFormat = function(d) {
+    return d3.format(",")(d);
+}
 
 // load api coronavirus cases data
 var url = "https://coronavirus-tracker-api.herokuapp.com/v2/locations?source=csbs"
@@ -27,24 +33,38 @@ d3.json(url).then(function(data) {
     console.log(locations.length)
 
     
+    var casesTot = [];
+    var nyTot = [];
 
     for (var i=0; i < locations.length; i++) {
-        // var state = locations[i].province
+
         var state = locations[i]
         var coordinates = state.coordinates
-        var casesCount = state.latest.confirmed
+        var casesCount = numberFormat(state.latest.confirmed)
         var location = []
         location.push(coordinates.latitude, coordinates.longitude)        
-        console.log(location)
+        // console.log(location)
+
+        // sum up cases (push to empty list and then add) 
+        casesTot.push(state.latest.confirmed)
+        var sumCases = casesTot.reduce((a, b) => a + b,0)
+        console.log(sumCases)
+
+        // test if statement by state
+        if (state.province === "New York") {
+            nyTot.push(state.latest.confirmed)
+        };
+        console.log(nyTot.reduce((a,b)=>a+b,0))
+        
 
     // circles
     L.circle(location, {
         fillOpacity: 0.75,
         color: "red",
         fillColor: "purple",
-        radius: markerSize(locations[i].latest.confirmed)
+        radius: markerSize(state.latest.confirmed)
         })
-        .bindPopup("<h4>" + state.county + ", " + state.province + "</h4> <hr> <h5>Positive Cases: " + casesCount + "</h5>")
+        .bindPopup("<h5>" + state.county + ", " + state.province + "</h5> <hr> <h6>Confirmed Cases: " + casesCount + "</h6><br><h6>Deaths: " + state.latest.deaths + "</h6><br><h7>Last Updated: " +  state.last_updated + "</h7>")
         .addTo(myMap);
 
     // Markers
