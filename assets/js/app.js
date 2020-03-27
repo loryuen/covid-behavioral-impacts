@@ -31,24 +31,49 @@ var parseTime = d3.timeParse("%Y%m%d");
 var url = "https://covidtracking.com/api/us/daily";
 
 // init view (national data)
+function init() {
+    nationalView();
+};
+init();
+
+
+
+
 
 //function for line plot of covid cases by state (diff api)
-
-//function for line plot of covid cases nationally
 
 // select state handler
 
     // function to render graphs based on handler
 
+    // d3.select on click handleSelect of state
+
+
+
+
+
+
 // national view button handler
+function handleButtonSelect() {
+    d3.event.preventDefault();
 
-    // function to render graph of national view
+    var national = d3.select('#selButton').node().value;
+    console.log(national);
 
-// d3.select on click handleSelect of state
+    nationalButtonSelected();
+}
+
+// function to render graph of national view
+function nationalButtonSelected() {
+    d3.json(url).then(function(nationalData) {
+        nationalView();
+    })
+}
 
 // d3.select on click handleButton to go back to national view
-d3.select("#selButton").on("click", handleSelect)
+d3.select("#selButton").on("click", handleButtonSelect)
 
+//function for line plot of covid cases nationally
 function nationalView() {
     // Load data from api covid cases national view
     d3.json(url).then(function(nationalData) {

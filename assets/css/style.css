@@ -42,14 +42,16 @@ path.line {
     border-radius: 10px;
 }
 
-
-/* .bar {
-    fill: lightcoral;
+#selButton {
+    background-color:red; 
+    border: black;
+    color: white;
+    padding: 10px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
 }
-
-.bar:hover {
-    fill:green;
-} */
 
 .sub-title {
     color: black;
