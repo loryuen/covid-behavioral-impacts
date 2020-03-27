@@ -60,7 +60,7 @@ d3.json(url).then(function(nationalData) {
 
     // Create two new functions passing the scales in as arguments
     // These will be used to create the chart's axes
-    var bottomAxis = d3.axisBottom(xTimeScale);
+    var bottomAxis = d3.axisBottom(xTimeScale).tickFormat(d3.timeFormat("%d-%b"));
     var leftAxis = d3.axisLeft(yLinearScale);
 
     // Configure a drawLine function which will use our scales to plot the line's points
@@ -86,8 +86,6 @@ d3.json(url).then(function(nationalData) {
             .attr("dy", ".15em")
             .attr("transform", "rotate(-65)");
 
-        
-
     // Append an SVG path and plot its points using the line function
     chartGroup.append("path")
         // The drawLine function returns the instructions for creating the line for milesData
@@ -96,115 +94,49 @@ d3.json(url).then(function(nationalData) {
         .attr("stroke", "red")
         .attr("stroke-width", 2);
 
+    // append circles
+    var circlesGroup = chartGroup.selectAll("circle")
+        .data(nationalData)
+        .enter()
+        .append("circle")
+        .attr("cx", data => xTimeScale(data.date))
+        .attr("cy", data => yLinearScale(data.total))
+        .attr("r", "2")
+        .attr("fill", "purple")
+        .attr("stroke-width", "1")
+        .attr("stroke", "black");
+
   //////////////
   // tool tip //
   //////////////
 
-    var focus = chartGroup.append("g")
-        .attr("class", "focus")
-        .style("display", "none");
+  // Date formatter to display dates nicely
+  var dateFormatter = d3.timeFormat("%d %b %Y");
 
-    focus.append("line")
-        .attr("class", "x-hover-line hover-line")
-        .attr("y1", 0)
-        .attr("y2", chartheight);
+  // number formatter for commas
+  var numberFormat = function(d) {
+    return d3.format(",")(d);
+}
 
-    focus.append("line")
-        .attr("class", "y-hover-line hover-line")
-        .attr("x1", chartWidth)
-        .attr("x2", chartWidth);
+  // Step 1: Initialize Tooltip
+  var toolTip = d3.tip()
+  .attr("class", "tooltip")
+  .offset([80, -60])
+  .html(function(data) {
+    return (`<h7>${dateFormatter(data.date)}</h7><br><h7>Confirmed cases: ${numberFormat(data.total)}</h7>`);
+  });
 
-    focus.append("circle")
-        .attr("r", 7.5);
+// Step 2: Create the tooltip in chartGroup.
+chartGroup.call(toolTip);
 
-    focus.append("text")
-        .attr("x", 15)
-      	.attr("dy", ".31em");
-
-    svg.append("rect")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-        .attr("class", "overlay")
-        .attr("width", chartWidth)
-        .attr("height", chartHeight)
-        .on("mouseover", function() { focus.style("display", null); })
-        .on("mouseout", function() { focus.style("display", "none"); })
-        .on("mousemove", mousemove);
-
-    function mousemove() {
-      var x0 = x.invert(d3.mouse(this)[0]),
-          i = bisectDate(data, x0, 1),
-          d0 = nationalData[i - 1],
-          d1 = nationalData[i],
-          d = x0 - d0.date > d1.date - x0 ? d1 : d0;
-      focus.attr("transform", "translate(" + x(d.date) + "," + y(d.total) + ")");
-      focus.select("text").text(function() { return d.total; });
-      focus.select(".x-hover-line").attr("y2", chartHeight - y(d.value));
-      focus.select(".y-hover-line").attr("x2", chartWidth + chartWidth);
-    }
-
-
-
-
-
-//   var focus = chartGroup.append("g")
-//     .attr("class", "focus")
-//     .style("display", "none");
-
-//   // add circle and rectangle box to focus point on line
-//   focus.append("circle")
-//     .attr("r", 4);
-
-//   focus.append("rect")
-//     .attr("class", "toolip")
-//     .attr("width", 100)
-//     .attr("height", 50)
-//     .attr("x", 10)
-//     .attr("y", -22)
-//     .attr("rx", 4)
-//     .attr("ry", 4);
-
-//   // append text to tooltip
-//   focus.append("text")
-//     .attr("class", "tooltip-date")
-//     .attr("x", 18)
-//     .attr("y", -2);
-
-//   focus.append("text")
-//     .attr("x", 18)
-//     .attr("y", 18)
-//     .text("Number of positive cases:");
-
-//   focus.append("text")
-//     .attr("class", "tooltip-total")
-//     .attr("x", 60)
-//     .attr("y", 18);
-    
-//     function mousemove() {
-//         var x0 = xTimeScale.invert(d3.mouse(this)[0]),
-//           i = bisectDate(data, x0, 1),
-//           d0 = data  [i-1],
-//           d1 = data[i],
-//           d = x0 - d0.date > d1.date - x0 ? d1:d0;
-//         focus.attr("transform", "translate(" + x(d.date) + "," + y(d.total) + ")");
-//         focus.select(".tooltip-date").text(dateFormatter(d.date));
-//         focus.select(".tooltip-total").text(formatValue(d.total));
-//     }
-//   chartGroup.append("rect")
-//     .attr("class", "overlay")
-//     .attr("width", width)
-//     .attr("height", height)
-//     .on("mouseover", function() {
-//         focus.style("display", null);
-//     })
-//     .on("mouseout", function() {
-//         focus.style("display", "none");
-//     })
-//     .on("mousemove", mousemove);
-
-  
-
-
-
+// Step 3: Create "mouseover" event listener to display tooltip
+circlesGroup.on("mouseover", function(data) {
+  toolTip.show(data, this);
+})
+// Step 4: Create "mouseout" event listener to hide tooltip
+  .on("mouseout", function(data) {
+    toolTip.hide(data);
+  });
 
 
 

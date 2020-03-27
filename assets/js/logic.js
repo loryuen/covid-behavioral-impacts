@@ -101,7 +101,6 @@ d3.json(url).then(function(data) {
         })
         .bindPopup("<h5>" + state.county + ", " + state.province + "</h5> <hr> <h6>Confirmed Cases: " + casesCount + "</h6><br><h6>Deaths: " + state.latest.deaths + "</h6><br><h7>Last Updated: " +  state.last_updated + "</h7>")
         .addTo(myMap);
-        console.log(state.county)
 
     }
 

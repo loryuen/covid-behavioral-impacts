@@ -29,19 +29,18 @@ path.line {
 }
 
 .tooltip {
-    fill:white;
-    stroke: #000;
+    position: absolute;
+    width: 120px;
+    height: 70px;
+    padding: 10px;
+    font: 12px sans-serif;
+    text-align: center;
+    color: black;
+    background: white;
+    border: 0;
+    border-radius: 10px;
 }
 
-.tooltip-date, .tooltip-total {
-    font-weight: bold;
-}
-
-.focus circle{
-    fill: #F1F3F3;
-    stroke: #6f257F;
-    stroke-width: 5px;
-}
 
 /* .bar {
     fill: lightcoral;
