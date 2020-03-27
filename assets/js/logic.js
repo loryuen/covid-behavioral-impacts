@@ -16,7 +16,26 @@ var myMap = L.map("map", {
 
 // // Define a markerSize function that will give each city a different radius based on its population
 function markerSize(casesCount) {
-    return casesCount * 20;
+    var size = 0;
+    if (casesCount > 10000) {
+        size = 400000
+    }
+    else if (casesCount > 400) {
+        size = 90000;
+    }
+    else if (casesCount >200) {
+        size = 30000
+    }
+    else if (casesCount > 100) {
+        size = 20000
+    }
+    else {
+        size = 10000
+    }
+
+    return size
+    // return casesCount * 20;
+//switches
     };
 
 // number formatter for commas
@@ -82,10 +101,13 @@ d3.json(url).then(function(data) {
         })
         .bindPopup("<h5>" + state.county + ", " + state.province + "</h5> <hr> <h6>Confirmed Cases: " + casesCount + "</h6><br><h6>Deaths: " + state.latest.deaths + "</h6><br><h7>Last Updated: " +  state.last_updated + "</h7>")
         .addTo(myMap);
+        console.log(state.county)
+
     }
 
-    // print totals
+    // print total cases
     console.log(`Total cases: ${sumCases}`)
+    // print total cases by state in dictionary
     console.log(statesTot)
 
 });

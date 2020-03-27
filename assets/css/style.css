@@ -25,7 +25,7 @@ body {
 
 path.line {
     fill: none;
-    stroke: #000;
+    stroke:red;
 }
 
 .tooltip {
@@ -37,7 +37,11 @@ path.line {
     font-weight: bold;
 }
 
-
+.focus circle{
+    fill: #F1F3F3;
+    stroke: #6f257F;
+    stroke-width: 5px;
+}
 
 /* .bar {
     fill: lightcoral;
