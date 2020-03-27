@@ -28,7 +28,8 @@ var chartGroup = svg.append("g")
 var parseTime = d3.timeParse("%Y%m%d");
 
 // json url
-var url = "https://covidtracking.com/api/us/daily";
+var urlNat = "https://covidtracking.com/api/us/daily";
+var urlState = "https://covidtracking.com/api/states/daily";
 
 // init view (national data)
 function init() {
@@ -36,9 +37,18 @@ function init() {
 };
 init();
 
+////////////////////////////////////////////////////
 
-
-
+// function for drop down of states
+function buildDropdown() {
+    d3.json(urlState).then(function(stateData) {
+        // figure out how to map only unique state abbreviations!
+        var stateAbbr = stateData.map( x => x.state);
+        console.log(stateAbbr) // prints all abbreviations for each entry by day
+        
+    })
+};
+buildDropdown();
 
 //function for line plot of covid cases by state (diff api)
 
@@ -52,6 +62,7 @@ init();
 
 
 
+////////////////////////////////////////////////////
 
 // national view button handler
 function handleButtonSelect() {
@@ -65,7 +76,7 @@ function handleButtonSelect() {
 
 // function to render graph of national view
 function nationalButtonSelected() {
-    d3.json(url).then(function(nationalData) {
+    d3.json(urlNat).then(function(nationalData) {
         nationalView();
     })
 }
@@ -76,7 +87,7 @@ d3.select("#selButton").on("click", handleButtonSelect)
 //function for line plot of covid cases nationally
 function nationalView() {
     // Load data from api covid cases national view
-    d3.json(url).then(function(nationalData) {
+    d3.json(urlNat).then(function(nationalData) {
 
         // Print the data
         console.log(nationalData);
@@ -156,7 +167,7 @@ function nationalView() {
     //////////////
 
     // Date formatter to display dates nicely
-    var dateFormatter = d3.timeFormat("%d %b %Y");
+    var dateFormatter = d3.timeFormat("%d %B %Y");
 
     // number formatter for commas
     var numberFormat = function(d) {
@@ -168,7 +179,7 @@ function nationalView() {
     .attr("class", "tooltip")
     .offset([80, -60])
     .html(function(data) {
-        return (`<h7>${dateFormatter(data.date)}</h7><br><h7>Confirmed cases: ${numberFormat(data.total)}</h7>`);
+        return (`<h7>${dateFormatter(data.date)}</h7><br><h7>Confirmed cases: ${numberFormat(data.total)}</h7><br><h7>Deaths: ${numberFormat(data.death)}</h7>`);
     });
 
     // Step 2: Create the tooltip in chartGroup.
