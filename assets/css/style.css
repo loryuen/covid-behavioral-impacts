@@ -33,7 +33,8 @@ path.line {
     width: 120px;
     height: 70px;
     padding: 10px;
-    font: 12px sans-serif;
+    font-family: "Helvetica Neue", Helvetica, sans-serif;
+    font-size: 12px;
     text-align: center;
     color: black;
     background: white;
