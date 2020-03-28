@@ -123,50 +123,6 @@ function buildDropdown() {
             .attr("stroke", "blue")
             .attr("stroke-width", 2);
 
-        // // append circles
-        // var circlesGroup = chartGroup.selectAll("circle")
-        //     .data(stateData)
-        //     .enter()
-        //     .append("circle")
-        //     .attr("cx", data => xTimeScale(data.date))
-        //     .attr("cy", data => yLinearScale(data.total))
-        //     .attr("r", "2")
-        //     .attr("fill", "purple")
-        //     .attr("stroke-width", "1")
-        //     .attr("stroke", "black");
-
-        // //////////////
-        // // tool tip //
-        // //////////////
-
-        // // Date formatter to display dates nicely
-        // var dateFormatter = d3.timeFormat("%d %B %Y");
-
-        // // number formatter for commas
-        // var numberFormat = function(d) {
-        //     return d3.format(",")(d);
-        // }
-
-        // // Step 1: Initialize Tooltip
-        // var toolTip = d3.tip()
-        // .attr("class", "tooltip")
-        // .offset([80, -60])
-        // .html(function(data) {
-        //     return (`<h7>${dateFormatter(data.date)}</h7><br><h7>Confirmed cases: ${numberFormat(data.total)}</h7><br><h7>Deaths: ${numberFormat(data.death)}</h7>`);
-        // });
-
-        // // Step 2: Create the tooltip in chartGroup.
-        // chartGroup.call(toolTip);
-
-        // // Step 3: Create "mouseover" event listener to display tooltip
-        // circlesGroup.on("mouseover", function(data) {
-        // toolTip.show(data, this);
-        // })
-        // // Step 4: Create "mouseout" event listener to hide tooltip
-        // .on("mouseout", function(data) {
-        //     toolTip.hide(data);
-        // });
-
         ///////////////////////////////
         // function to update chart //
         ///////////////////////////////
@@ -183,8 +139,8 @@ function buildDropdown() {
                     .x(data => xTimeScale(data.date))
                     .y(data => yLinearScale(data.total))
                 )
-            // append circles to selected line
-            var circlesGroup = chartGroup.selectAll("circle")
+                
+            var circlesGroup2 = chartGroup.selectAll("circle")
                 .data(dataFilter)
                 .enter()
                 .append("circle")
@@ -219,7 +175,7 @@ function buildDropdown() {
             chartGroup.call(toolTip);
 
             // Step 3: Create "mouseover" event listener to display tooltip
-            circlesGroup.on("mouseover", function(data) {
+            circlesGroup2.on("mouseover", function(data) {
             toolTip.show(data, this);
             })
             // Step 4: Create "mouseout" event listener to hide tooltip
