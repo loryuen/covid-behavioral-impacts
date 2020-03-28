@@ -39,6 +39,11 @@ path.line {
     stroke:red;
 }
 
+path.line-state {
+    fill: none;
+    stroke: blue;
+}
+
 .tooltip {
     position: absolute;
     width: 200px;

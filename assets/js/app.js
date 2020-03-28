@@ -35,17 +35,208 @@ var urlState = "https://covidtracking.com/api/states/daily";
 function init() {
     nationalView();
 };
-init();
+// init();
 
 ////////////////////////////////////////////////////
 
 // function for drop down of states
 function buildDropdown() {
     d3.json(urlState).then(function(stateData) {
-        // figure out how to map only unique state abbreviations!
-        var stateAbbr = stateData.map( x => x.state);
-        console.log(stateAbbr) // prints all abbreviations for each entry by day
         
+        // map only unique state abbreviations
+        var stateAbbr = d3.map(stateData, function(d) {
+            return (d.state)
+        }).keys()
+        // print state abbreviations
+        console.log(stateAbbr)
+
+        // var stateMax = stateData.filter(function(d) {
+        //     return d.total == selectedGroup
+        // })
+        // console.log(stateMax)
+
+        // add options to the button
+        d3.select("#selState")
+            .selectAll('myOptions')
+                .data(stateAbbr)
+            .enter()
+                .append('option')
+            .text(function(d) {
+                return (d)
+            })
+            .attr("value", function(d) {
+                return d;
+            })
+        
+        // Format the date and cast the total cases value to a number
+        stateData.forEach(function(data) {
+            data.date = parseTime(data.date);
+            data.total = +data.total;
+            // console.log(data.date)
+            console.log(data.state, data.total)
+        });
+        
+        // configure x scale
+        var xTimeScale = d3.scaleTime()
+        .range([0, chartWidth])
+        .domain(d3.extent(stateData, data => data.date));
+
+        // Configure a linear scale with a range between the chartHeight and 0
+        // Set the domain for the xLinearScale function
+        console.log(d3.max(stateData, data => data.total))
+        var yLinearScale = d3.scaleLinear()
+            .range([chartHeight, 0])
+            .domain([0, d3.max(stateData, data => data.total)]);
+
+        // Create two new functions passing the scales in as arguments
+        // These will be used to create the chart's axes
+        var bottomAxis = d3.axisBottom(xTimeScale).tickFormat(d3.timeFormat("%d-%b"));
+        var rightAxis = d3.axisRight(yLinearScale);
+
+        // Configure a drawLine function which will use our scales to plot the line's points
+        var drawLine = d3
+            .line()
+            .x(data => xTimeScale(data.date))
+            .y(data => yLinearScale(data.total));
+
+        // Append an SVG group element to the SVG area, create the left axis inside of it
+        chartGroup.append("g")
+            .classed("axis", true)
+            .call(rightAxis);
+
+        // Append an SVG group element to the SVG area, create the bottom axis inside of it
+        // Translate the bottom axis to the bottom of the page
+        chartGroup.append("g")
+            .classed("axis", true)
+            .attr("transform", "translate(0, " + chartHeight + ")")
+            .call(bottomAxis)
+            .selectAll("text")	
+                .style("text-anchor", "end")
+                .attr("dx", "-.8em")
+                .attr("dy", ".15em")
+                .attr("transform", "rotate(-65)");
+
+        // Append an SVG path and plot its points using the line function
+        var line = chartGroup.append("path")
+            .attr("d", drawLine (stateData[0]) )
+            .classed("line", true)
+            .attr("stroke", "blue")
+            .attr("stroke-width", 2);
+
+        // // append circles
+        // var circlesGroup = chartGroup.selectAll("circle")
+        //     .data(stateData)
+        //     .enter()
+        //     .append("circle")
+        //     .attr("cx", data => xTimeScale(data.date))
+        //     .attr("cy", data => yLinearScale(data.total))
+        //     .attr("r", "2")
+        //     .attr("fill", "purple")
+        //     .attr("stroke-width", "1")
+        //     .attr("stroke", "black");
+
+        // //////////////
+        // // tool tip //
+        // //////////////
+
+        // // Date formatter to display dates nicely
+        // var dateFormatter = d3.timeFormat("%d %B %Y");
+
+        // // number formatter for commas
+        // var numberFormat = function(d) {
+        //     return d3.format(",")(d);
+        // }
+
+        // // Step 1: Initialize Tooltip
+        // var toolTip = d3.tip()
+        // .attr("class", "tooltip")
+        // .offset([80, -60])
+        // .html(function(data) {
+        //     return (`<h7>${dateFormatter(data.date)}</h7><br><h7>Confirmed cases: ${numberFormat(data.total)}</h7><br><h7>Deaths: ${numberFormat(data.death)}</h7>`);
+        // });
+
+        // // Step 2: Create the tooltip in chartGroup.
+        // chartGroup.call(toolTip);
+
+        // // Step 3: Create "mouseover" event listener to display tooltip
+        // circlesGroup.on("mouseover", function(data) {
+        // toolTip.show(data, this);
+        // })
+        // // Step 4: Create "mouseout" event listener to hide tooltip
+        // .on("mouseout", function(data) {
+        //     toolTip.hide(data);
+        // });
+
+        ///////////////////////////////
+        // function to update chart //
+        ///////////////////////////////
+        function update(selectedGroup) {
+            var dataFilter = stateData.filter(function(d) {
+                return d.state == selectedGroup
+            })
+
+            // give new data to update line
+            line.datum(dataFilter)
+                .transition()
+                .duration(1000)
+                .attr("d", d3.line()
+                    .x(data => xTimeScale(data.date))
+                    .y(data => yLinearScale(data.total))
+                )
+            // append circles to selected line
+            var circlesGroup = chartGroup.selectAll("circle")
+                .data(dataFilter)
+                .enter()
+                .append("circle")
+                .attr("cx", data => xTimeScale(data.date))
+                .attr("cy", data => yLinearScale(data.total))
+                .attr("r", "2")
+                .attr("fill", "purple")
+                .attr("stroke-width", "1")
+                .attr("stroke", "black");
+
+            //////////////
+            // tool tip //
+            //////////////
+
+            // Date formatter to display dates nicely
+            var dateFormatter = d3.timeFormat("%d %B %Y");
+
+            // number formatter for commas
+            var numberFormat = function(d) {
+                return d3.format(",")(d);
+            }
+
+            // Step 1: Initialize Tooltip
+            var toolTip = d3.tip()
+            .attr("class", "tooltip")
+            .offset([80, -60])
+            .html(function(data) {
+                return (`<h7>${dateFormatter(data.date)}</h7><br><h7>Confirmed cases: ${numberFormat(data.total)}</h7><br><h7>Deaths: ${numberFormat(data.death)}</h7>`);
+            });
+
+            // Step 2: Create the tooltip in chartGroup.
+            chartGroup.call(toolTip);
+
+            // Step 3: Create "mouseover" event listener to display tooltip
+            circlesGroup.on("mouseover", function(data) {
+            toolTip.show(data, this);
+            })
+            // Step 4: Create "mouseout" event listener to hide tooltip
+            .on("mouseout", function(data) {
+                toolTip.hide(data);
+            });
+            
+        }
+        ///////////////////////////////////////////////////////////////////////
+        // Event Listener - when button is changed, run updateChart function //
+        ///////////////////////////////////////////////////////////////////////
+
+        d3.select("#selState").on("change", function(d) {
+            var selectedOption = d3.select(this).property("value")
+            update(selectedOption)
+        })
+
     })
 };
 buildDropdown();
