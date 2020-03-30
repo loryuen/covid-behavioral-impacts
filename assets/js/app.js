@@ -4,7 +4,7 @@ var svgHeight = 500;
 
 // Define the chart's margins as an object
 var margin = {
-  top: 60,
+  top: 20,
   right: 60,
   bottom: 60,
   left: 60
@@ -97,7 +97,7 @@ function statePlots() {
         var yLinearScale = d3.scaleLinear()
             .range([chartHeight, 0])
             // .domain([0, d3.max(stateData, data => data.positive)]);
-            .domain([0, 140000]);
+            .domain([0, 100000]);
 
         // Create two new functions passing the scales in as arguments
         // These will be used to create the chart's axes
@@ -298,7 +298,7 @@ function nationalView() {
         // Configure a linear scale with a range between the chartHeight and 0
         var yLinearScale = d3.scaleLinear()
             .range([chartHeight, 0])
-            .domain([0, d3.max(nationalData, data => data.positive)]);
+            .domain([0, d3.max(nationalData, data => data.positive)+10000]);
 
         // Create two new functions passing the scales in as arguments
         var bottomAxis = d3.axisBottom(xTimeScale).tickFormat(d3.timeFormat("%d-%b"));
