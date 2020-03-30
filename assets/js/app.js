@@ -31,15 +31,17 @@ var parseTime = d3.timeParse("%Y%m%d");
 var urlNat = "https://covidtracking.com/api/us/daily";
 var urlState = "https://covidtracking.com/api/states/daily";
 
-// init view (national data)
+///////////////////////////////
+// init view (national data) //
+///////////////////////////////
 function init() {
     nationalView();
 };
-// init();
+init();
 
-////////////////////////////////////////////////////
-
-// function for drop down of states
+///////////////////////////////////////
+// function for drop down of states //
+//////////////////////////////////////
 function buildDropdown() {
     d3.json(urlState).then(function(stateData) {
         
@@ -49,11 +51,6 @@ function buildDropdown() {
         }).keys()
         // print state abbreviations
         console.log(stateAbbr)
-
-        // var stateMax = stateData.filter(function(d) {
-        //     return d.total == selectedGroup
-        // })
-        // console.log(stateMax)
 
         // add options to the button
         d3.select("#selState")
@@ -71,11 +68,20 @@ function buildDropdown() {
         // Format the date and cast the total cases value to a number
         stateData.forEach(function(data) {
             data.date = parseTime(data.date);
-            data.total = +data.total;
+            data.positive = +data.positive;
             // console.log(data.date)
-            console.log(data.state, data.total)
+            console.log(data.state, data.positive)
         });
-        
+    });
+};
+buildDropdown();
+
+//////////////////////////////////////////////////////////////
+//function for line plot of covid cases by state (diff api) //
+//////////////////////////////////////////////////////////////
+function statePlots() {
+    d3.json(urlState).then(function(stateData) {
+
         // configure x scale
         var xTimeScale = d3.scaleTime()
         .range([0, chartWidth])
@@ -83,10 +89,10 @@ function buildDropdown() {
 
         // Configure a linear scale with a range between the chartHeight and 0
         // Set the domain for the xLinearScale function
-        console.log(d3.max(stateData, data => data.total))
+        console.log(d3.max(stateData, data => data.positive))
         var yLinearScale = d3.scaleLinear()
             .range([chartHeight, 0])
-            .domain([0, d3.max(stateData, data => data.total)]);
+            .domain([0, d3.max(stateData, data => data.positive)]);
 
         // Create two new functions passing the scales in as arguments
         // These will be used to create the chart's axes
@@ -97,11 +103,12 @@ function buildDropdown() {
         var drawLine = d3
             .line()
             .x(data => xTimeScale(data.date))
-            .y(data => yLinearScale(data.total));
+            .y(data => yLinearScale(data.positive));
 
         // Append an SVG group element to the SVG area, create the left axis inside of it
         chartGroup.append("g")
-            .classed("axis", true)
+            .classed("axis-blue", true)
+            .attr("transform", "translate(280,0)")
             .call(rightAxis);
 
         // Append an SVG group element to the SVG area, create the bottom axis inside of it
@@ -120,7 +127,7 @@ function buildDropdown() {
         var line = chartGroup.append("path")
             .attr("d", drawLine (stateData[0]) )
             .classed("line", true)
-            .attr("stroke", "blue")
+            .style("stroke", "steelblue")
             .attr("stroke-width", 2);
 
         ///////////////////////////////
@@ -137,7 +144,7 @@ function buildDropdown() {
                 .duration(1000)
                 .attr("d", d3.line()
                     .x(data => xTimeScale(data.date))
-                    .y(data => yLinearScale(data.total))
+                    .y(data => yLinearScale(data.positive))
                 )
                 
             var circlesGroup2 = chartGroup.selectAll("circle")
@@ -145,7 +152,7 @@ function buildDropdown() {
                 .enter()
                 .append("circle")
                 .attr("cx", data => xTimeScale(data.date))
-                .attr("cy", data => yLinearScale(data.total))
+                .attr("cy", data => yLinearScale(data.positive))
                 .attr("r", "2")
                 .attr("fill", "purple")
                 .attr("stroke-width", "1")
@@ -168,7 +175,7 @@ function buildDropdown() {
             .attr("class", "tooltip")
             .offset([80, -60])
             .html(function(data) {
-                return (`<h7>${dateFormatter(data.date)}</h7><br><h7>Confirmed cases: ${numberFormat(data.total)}</h7><br><h7>Deaths: ${numberFormat(data.death)}</h7>`);
+                return (`<h7>${dateFormatter(data.date)}</h7><br><h7>Confirmed cases: ${numberFormat(data.positive)}</h7><br><h7>Deaths: ${numberFormat(data.death)}</h7>`);
             });
 
             // Step 2: Create the tooltip in chartGroup.
@@ -191,27 +198,22 @@ function buildDropdown() {
         d3.select("#selState").on("change", function(d) {
             var selectedOption = d3.select(this).property("value")
             update(selectedOption)
-        })
-
-    })
+        });
+    });
 };
-buildDropdown();
 
-//function for line plot of covid cases by state (diff api)
-
-// select state handler
-
-    // function to render graphs based on handler
-
-    // d3.select on click handleSelect of state
+///////////////////////////////////////////////
+// click handler for filter states dropdown //
+///////////////////////////////////////////////
+d3.select("#selState").on("click", statePlots)
 
 
 
+//////////////////////////////////////////////////////////////////
 
-
-////////////////////////////////////////////////////
-
-// national view button handler
+//////////////////////////////////
+// national view button handler //
+//////////////////////////////////
 function handleButtonSelect() {
     d3.event.preventDefault();
 
@@ -219,19 +221,25 @@ function handleButtonSelect() {
     console.log(national);
 
     nationalButtonSelected();
-}
+};
 
-// function to render graph of national view
+///////////////////////////////////////////////
+// function to render graph of national view //
+///////////////////////////////////////////////
 function nationalButtonSelected() {
     d3.json(urlNat).then(function(nationalData) {
         nationalView();
     })
-}
+};
 
-// d3.select on click handleButton to go back to national view
+//////////////////////////////////////////////////////
+// button handler to show national plot upon click //
+//////////////////////////////////////////////////////
 d3.select("#selButton").on("click", handleButtonSelect)
 
-//function for line plot of covid cases nationally
+//////////////////////////////////////////////////////
+//function for line plot of covid cases nationally //
+//////////////////////////////////////////////////////
 function nationalView() {
     // Load data from api covid cases national view
     d3.json(urlNat).then(function(nationalData) {
@@ -239,30 +247,23 @@ function nationalView() {
         // Print the data
         console.log(nationalData);
 
-        
         // Format the date and cast the total cases value to a number
         nationalData.forEach(function(data) {
             data.date = parseTime(data.date);
-            data.total = +data.total;
-            // console.log(data.date)
-            // console.log(data.total)
+            data.positive = +data.positive;
         });
 
         // Configure a time scale with a range between 0 and the chartWidth
-        // Set the domain for the xTimeScale function
-        // d3.extent returns the an array containing the min and max values for the property specified
         var xTimeScale = d3.scaleTime()
             .range([0, chartWidth])
             .domain(d3.extent(nationalData, data => data.date));
 
         // Configure a linear scale with a range between the chartHeight and 0
-        // Set the domain for the xLinearScale function
         var yLinearScale = d3.scaleLinear()
             .range([chartHeight, 0])
-            .domain([0, d3.max(nationalData, data => data.total)]);
+            .domain([0, d3.max(nationalData, data => data.positive)]);
 
         // Create two new functions passing the scales in as arguments
-        // These will be used to create the chart's axes
         var bottomAxis = d3.axisBottom(xTimeScale).tickFormat(d3.timeFormat("%d-%b"));
         var leftAxis = d3.axisLeft(yLinearScale);
 
@@ -270,11 +271,11 @@ function nationalView() {
         var drawLine = d3
             .line()
             .x(data => xTimeScale(data.date))
-            .y(data => yLinearScale(data.total));
+            .y(data => yLinearScale(data.positive));
 
         // Append an SVG group element to the SVG area, create the left axis inside of it
         chartGroup.append("g")
-            .classed("axis", true)
+            .attr("class", "axis-red")	
             .call(leftAxis);
 
         // Append an SVG group element to the SVG area, create the bottom axis inside of it
@@ -303,7 +304,7 @@ function nationalView() {
             .enter()
             .append("circle")
             .attr("cx", data => xTimeScale(data.date))
-            .attr("cy", data => yLinearScale(data.total))
+            .attr("cy", data => yLinearScale(data.positive))
             .attr("r", "2")
             .attr("fill", "purple")
             .attr("stroke-width", "1")
@@ -326,7 +327,7 @@ function nationalView() {
     .attr("class", "tooltip")
     .offset([80, -60])
     .html(function(data) {
-        return (`<h7>${dateFormatter(data.date)}</h7><br><h7>Confirmed cases: ${numberFormat(data.total)}</h7><br><h7>Deaths: ${numberFormat(data.death)}</h7>`);
+        return (`<h7>${dateFormatter(data.date)}</h7><br><h7>Confirmed cases: ${numberFormat(data.positive)}</h7><br><h7>Deaths: ${numberFormat(data.death)}</h7>`);
     });
 
     // Step 2: Create the tooltip in chartGroup.
@@ -342,6 +343,6 @@ function nationalView() {
     });
 
     }).catch(function(error) {
-    console.log(error);
-    });
+        console.log(error);
+        });
 };

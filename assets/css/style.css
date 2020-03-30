@@ -44,6 +44,14 @@ path.line-state {
     stroke: blue;
 }
 
+.axis-red text {
+    fill: red;
+}
+
+.axis-blue text {
+    fill: steelblue;
+}
+
 .tooltip {
     position: absolute;
     width: 200px;
