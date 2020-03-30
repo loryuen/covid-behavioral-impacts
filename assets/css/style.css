@@ -61,7 +61,7 @@ path.line-state {
     font-size: 12px;
     text-align: center;
     color: black;
-    background: white;
+    background: lightgrey;
     border: 0;
     border-radius: 10px;
 }

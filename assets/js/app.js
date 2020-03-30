@@ -200,10 +200,9 @@ function statePlots() {
                 .attr("class", "tooltip")
                 .offset([80, -60])
                 .html(function(data) {
-                    return (`<h7><strong>${data.state}</strong></h7><br>
-                    <h7>${dateFormatter(data.date)}</h7><br>
+                    return (`<h7><strong>${data.state}</strong></h7> | <h7><strong>${dateFormatter(data.date)}</strong></h7><br>
                     <h7>Confirmed cases: ${numberFormat(data.positive)}</h7><br>
-                    <h7>Number of new cases: ${numberFormat(data.positiveIncrease)}</h7><br>
+                    <h7>New cases: ${numberFormat(data.positiveIncrease)}</h7><br>
                     <h7>Deaths: ${numberFormat(data.death)}</h7>`);
                 });
 
@@ -365,9 +364,9 @@ function nationalView() {
     .attr("class", "tooltip")
     .offset([80, -60])
     .html(function(data) {
-        return (`<h7><strong><u>${dateFormatter(data.date)}</u></strong></h7><br>
+        return (`<h7><strong>USA</strong></h7> | <h7><strong>${dateFormatter(data.date)}</strong></h7><br>
         <h7><strong>Confirmed cases:</strong> ${numberFormat(data.positive)}</h7><br>
-        <h7><strong>Number of new cases:</strong> ${numberFormat(data.positiveIncrease)}</h7><br>
+        <h7><strong>New cases:</strong> ${numberFormat(data.positiveIncrease)}</h7><br>
         <h7><strong>Deaths:</strong> ${numberFormat(data.death)}</h7>`);
     });
 
