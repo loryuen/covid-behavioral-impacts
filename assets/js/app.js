@@ -25,8 +25,8 @@ var chartGroup = svg.append("g")
   .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
 // Append a second group area for state plot to differentiate from national plot and so d3-tip can bind to the correct line plot
-var chartGroup2 = svg.append("g")
-  .attr("transform", `translate(${margin.left}, ${margin.top})`);
+// var chartGroup2 = svg.append("g")
+//   .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
 // Configure a parseTime function which will return a new Date object from a string
 var parseTime = d3.timeParse("%Y%m%d");
@@ -54,7 +54,7 @@ function buildDropdown() {
             return (d.state)
         }).keys()
         // print state abbreviations
-        console.log(stateAbbr)
+        // console.log(stateAbbr)
 
         // add options to the button
         d3.select("#selState")
@@ -78,12 +78,13 @@ buildDropdown();
 function statePlots() {
     d3.json(urlState).then(function(stateData) {
 
+        var chartGroup2 = svg.append("g")
+            .attr("transform", `translate(${margin.left}, ${margin.top})`);
+
         // Format the date and cast the total cases value to a number
         stateData.forEach(function(data) {
             data.date = parseTime(data.date);
             data.positive = +data.positive;
-            // console.log(data.date)
-            console.log(data.state, data.positive)
         });
 
         // configure x scale
@@ -93,7 +94,6 @@ function statePlots() {
 
         // Configure a linear scale with a range between the chartHeight and 0
         // Set the domain for the xLinearScale function
-        console.log(d3.max(stateData, data => data.positive))
         var yLinearScale = d3.scaleLinear()
             .range([chartHeight, 0])
             // .domain([0, d3.max(stateData, data => data.positive)]);
@@ -153,7 +153,8 @@ function statePlots() {
                     .x(data => xTimeScale(data.date))
                     .y(data => yLinearScale(data.positive))
                 )
-            
+            updateCircles(selectedGroup)
+        }
             // TEST
             // var stateLabel = d3.map(stateData, function(d) {
             //     console.log(d.state)
@@ -163,7 +164,14 @@ function statePlots() {
             
             // chartGroup2.append("text")
             //     .text(stateLabel)
-            
+        function updateCircles(selectedGroup) {
+            var dataFilter = stateData.filter(function(d) {
+                return d.state == selectedGroup
+            })
+            //test
+            var chartGroup2 = svg.append("g")
+             .attr("transform", `translate(${margin.left}, ${margin.top})`);
+
             var circlesGroup2 = chartGroup2.selectAll("circle")
                 .data(dataFilter)
                 .enter()
@@ -189,11 +197,15 @@ function statePlots() {
 
             // Step 1: Initialize Tooltip
             var toolTip = d3.tip()
-            .attr("class", "tooltip")
-            .offset([80, -60])
-            .html(function(data) {
-                return (`<h7>${dateFormatter(data.date)}</h7><br><h7>Confirmed cases: ${numberFormat(data.positive)}</h7><br><h7>Deaths: ${numberFormat(data.death)}</h7>`);
-            });
+                .attr("class", "tooltip")
+                .offset([80, -60])
+                .html(function(data) {
+                    return (`<h7><strong>${data.state}</strong></h7><br>
+                    <h7>${dateFormatter(data.date)}</h7><br>
+                    <h7>Confirmed cases: ${numberFormat(data.positive)}</h7><br>
+                    <h7>Number of new cases: ${numberFormat(data.positiveIncrease)}</h7><br>
+                    <h7>Deaths: ${numberFormat(data.death)}</h7>`);
+                });
 
             // Step 2: Create the tooltip in chartGroup.
             chartGroup2.call(toolTip);
@@ -206,15 +218,16 @@ function statePlots() {
             .on("mouseout", function(data) {
                 toolTip.hide(data);
             });
-            
         }
+            
+        // } close function of update SelectedOption
         ///////////////////////////////////////////////////////////////////////
         // Event Listener - when button is changed, run updateChart function //
         ///////////////////////////////////////////////////////////////////////
 
         d3.select("#selState").on("change", function(d) {
             var selectedOption = d3.select(this).property("value")
-            update(selectedOption)
+            update(selectedOption);
         });
     });
 };
@@ -270,7 +283,7 @@ function nationalView() {
     d3.json(urlNat).then(function(nationalData) {
 
         // Print the data
-        console.log(nationalData);
+        // console.log(nationalData);
 
         // Format the date and cast the total cases value to a number
         nationalData.forEach(function(data) {
