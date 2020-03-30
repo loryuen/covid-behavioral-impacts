@@ -28,8 +28,8 @@ var chartGroup = svg.append("g")
 var parseTime = d3.timeParse("%Y%m%d");
 
 // json url
-var urlNat = "https://covidtracking.com/api/us/daily";
-var urlState = "https://covidtracking.com/api/states/daily";
+var urlNat = "https://covidtracking.com/api/us/daily"; // to see national plot by day (aggregate)
+var urlState = "https://covidtracking.com/api/states/daily"; // to filter states and see cases by day
 
 ///////////////////////////////
 // init view (national data) //
@@ -64,14 +64,6 @@ function buildDropdown() {
             .attr("value", function(d) {
                 return d;
             })
-        
-        // Format the date and cast the total cases value to a number
-        stateData.forEach(function(data) {
-            data.date = parseTime(data.date);
-            data.positive = +data.positive;
-            // console.log(data.date)
-            console.log(data.state, data.positive)
-        });
     });
 };
 buildDropdown();
@@ -81,6 +73,14 @@ buildDropdown();
 //////////////////////////////////////////////////////////////
 function statePlots() {
     d3.json(urlState).then(function(stateData) {
+
+        // Format the date and cast the total cases value to a number
+        stateData.forEach(function(data) {
+            data.date = parseTime(data.date);
+            data.positive = +data.positive;
+            // console.log(data.date)
+            console.log(data.state, data.positive)
+        });
 
         // configure x scale
         var xTimeScale = d3.scaleTime()
@@ -117,18 +117,20 @@ function statePlots() {
             .classed("axis", true)
             .attr("transform", "translate(0, " + chartHeight + ")")
             .call(bottomAxis)
-            .selectAll("text")	
+            .selectAll("text") // set x axis labels at an angle
                 .style("text-anchor", "end")
                 .attr("dx", "-.8em")
                 .attr("dy", ".15em")
                 .attr("transform", "rotate(-65)");
+
+        
 
         // Append an SVG path and plot its points using the line function
         var line = chartGroup.append("path")
             .attr("d", drawLine (stateData[0]) )
             .classed("line", true)
             .style("stroke", "steelblue")
-            .attr("stroke-width", 2);
+            .attr("stroke-width", 2)
 
         ///////////////////////////////
         // function to update chart //
@@ -207,7 +209,15 @@ function statePlots() {
 ///////////////////////////////////////////////
 d3.select("#selState").on("click", statePlots)
 
+// function to clear plots
+function clearPlots() {
+    d3.selectAll(".line").remove();
+    d3.selectAll("circle").remove();
 
+}
+
+//clear plots
+d3.select("#selClear").on("click", clearPlots)
 
 //////////////////////////////////////////////////////////////////
 
@@ -327,7 +337,10 @@ function nationalView() {
     .attr("class", "tooltip")
     .offset([80, -60])
     .html(function(data) {
-        return (`<h7>${dateFormatter(data.date)}</h7><br><h7>Confirmed cases: ${numberFormat(data.positive)}</h7><br><h7>Deaths: ${numberFormat(data.death)}</h7>`);
+        return (`<h7><strong><u>${dateFormatter(data.date)}</u></strong></h7><br>
+        <h7><strong>Confirmed cases:</strong> ${numberFormat(data.positive)}</h7><br>
+        <h7><strong>Number of new cases:</strong> ${numberFormat(data.positiveIncrease)}</h7><br>
+        <h7><strong>Deaths:</strong> ${numberFormat(data.death)}</h7>`);
     });
 
     // Step 2: Create the tooltip in chartGroup.
