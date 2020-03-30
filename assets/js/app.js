@@ -20,8 +20,12 @@ var svg = d3.select("#plot-cases")
   .attr("width", svgWidth)
   .attr("height", svgHeight);
 
-// Append a group area, then set its margins
+// Append a group area, then set its margins (for national plot)
 var chartGroup = svg.append("g")
+  .attr("transform", `translate(${margin.left}, ${margin.top})`);
+
+// Append a second group area for state plot to differentiate from national plot and so d3-tip can bind to the correct line plot
+var chartGroup2 = svg.append("g")
   .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
 // Configure a parseTime function which will return a new Date object from a string
@@ -92,11 +96,12 @@ function statePlots() {
         console.log(d3.max(stateData, data => data.positive))
         var yLinearScale = d3.scaleLinear()
             .range([chartHeight, 0])
-            .domain([0, d3.max(stateData, data => data.positive)]);
+            // .domain([0, d3.max(stateData, data => data.positive)]);
+            .domain([0, 140000]);
 
         // Create two new functions passing the scales in as arguments
         // These will be used to create the chart's axes
-        var bottomAxis = d3.axisBottom(xTimeScale).tickFormat(d3.timeFormat("%d-%b"));
+        // var bottomAxis = d3.axisBottom(xTimeScale).tickFormat(d3.timeFormat("%d-%b"));
         var rightAxis = d3.axisRight(yLinearScale);
 
         // Configure a drawLine function which will use our scales to plot the line's points
@@ -106,31 +111,31 @@ function statePlots() {
             .y(data => yLinearScale(data.positive));
 
         // Append an SVG group element to the SVG area, create the left axis inside of it
-        chartGroup.append("g")
+        chartGroup2.append("g")
             .classed("axis-blue", true)
             .attr("transform", "translate(280,0)")
             .call(rightAxis);
 
         // Append an SVG group element to the SVG area, create the bottom axis inside of it
         // Translate the bottom axis to the bottom of the page
-        chartGroup.append("g")
-            .classed("axis", true)
-            .attr("transform", "translate(0, " + chartHeight + ")")
-            .call(bottomAxis)
-            .selectAll("text") // set x axis labels at an angle
-                .style("text-anchor", "end")
-                .attr("dx", "-.8em")
-                .attr("dy", ".15em")
-                .attr("transform", "rotate(-65)");
-
-        
+        // chartGroup.append("g")
+        //     .classed("axis", true)
+        //     .attr("transform", "translate(0, " + chartHeight + ")")
+        //     .call(bottomAxis)
+        //     .selectAll("text") // set x axis labels at an angle
+        //         .style("text-anchor", "end")
+        //         .attr("dx", "-.8em")
+        //         .attr("dy", ".15em")
+        //         .attr("transform", "rotate(-65)");
 
         // Append an SVG path and plot its points using the line function
-        var line = chartGroup.append("path")
+        var line = chartGroup2.append("path")
             .attr("d", drawLine (stateData[0]) )
             .classed("line", true)
             .style("stroke", "steelblue")
             .attr("stroke-width", 2)
+
+        
 
         ///////////////////////////////
         // function to update chart //
@@ -148,8 +153,18 @@ function statePlots() {
                     .x(data => xTimeScale(data.date))
                     .y(data => yLinearScale(data.positive))
                 )
-                
-            var circlesGroup2 = chartGroup.selectAll("circle")
+            
+            // TEST
+            // var stateLabel = d3.map(stateData, function(d) {
+            //     console.log(d.state)
+            //     return (d.state)})
+                        
+            // console.log(stateLabel)
+            
+            // chartGroup2.append("text")
+            //     .text(stateLabel)
+            
+            var circlesGroup2 = chartGroup2.selectAll("circle")
                 .data(dataFilter)
                 .enter()
                 .append("circle")
@@ -181,7 +196,7 @@ function statePlots() {
             });
 
             // Step 2: Create the tooltip in chartGroup.
-            chartGroup.call(toolTip);
+            chartGroup2.call(toolTip);
 
             // Step 3: Create "mouseover" event listener to display tooltip
             circlesGroup2.on("mouseover", function(data) {
