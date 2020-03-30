@@ -52,6 +52,10 @@ path.line-state {
     fill: steelblue;
 }
 
+.sub-text {
+    font-size: 14px;
+}
+
 .tooltip {
     position: absolute;
     width: 200px;

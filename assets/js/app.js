@@ -5,9 +5,9 @@ var svgHeight = 500;
 // Define the chart's margins as an object
 var margin = {
   top: 20,
-  right: 60,
+  right: 80,
   bottom: 60,
-  left: 60
+  left: 40
 };
 
 // Define dimensions of the chart area
