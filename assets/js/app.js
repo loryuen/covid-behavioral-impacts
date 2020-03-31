@@ -96,8 +96,8 @@ function statePlots() {
         // Set the domain for the xLinearScale function
         var yLinearScale = d3.scaleLinear()
             .range([chartHeight, 0])
-            // .domain([0, d3.max(stateData, data => data.positive)]);
-            .domain([0, 100000]);
+            .domain([0, d3.max(stateData, data => data.positive)+30000]);
+            // .domain([0, 100000]);
 
         // Create two new functions passing the scales in as arguments
         // These will be used to create the chart's axes
@@ -115,6 +115,7 @@ function statePlots() {
             .classed("axis-blue", true)
             .attr("transform", "translate(280,0)")
             .call(rightAxis);
+            
 
         // Append an SVG group element to the SVG area, create the bottom axis inside of it
         // Translate the bottom axis to the bottom of the page
@@ -298,7 +299,7 @@ function nationalView() {
         // Configure a linear scale with a range between the chartHeight and 0
         var yLinearScale = d3.scaleLinear()
             .range([chartHeight, 0])
-            .domain([0, d3.max(nationalData, data => data.positive)+10000]);
+            .domain([0, d3.max(nationalData, data => data.positive)]);
 
         // Create two new functions passing the scales in as arguments
         var bottomAxis = d3.axisBottom(xTimeScale).tickFormat(d3.timeFormat("%d-%b"));
@@ -313,7 +314,12 @@ function nationalView() {
         // Append an SVG group element to the SVG area, create the left axis inside of it
         chartGroup.append("g")
             .attr("class", "axis-red")	
-            .call(leftAxis);
+            .call(leftAxis)
+            .selectAll("text")	
+                .style("text-anchor", "end")
+                .attr("dx", "-.3em")
+                .attr("dy", ".01em")
+                .attr("transform", "rotate(-40)");
 
         // Append an SVG group element to the SVG area, create the bottom axis inside of it
         // Translate the bottom axis to the bottom of the page
