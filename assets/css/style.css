@@ -21,6 +21,10 @@ body {
     margin-top: 20px;
     }
 
+/* #plot-cases {
+    margin-left: 100px;
+} */
+
 #map {
     height: 80vh;
     width: 100vw;
@@ -60,7 +64,7 @@ path.line-state {
     position: absolute;
     width: 200px;
     height: 76px;
-    padding: 8px;
+    padding: 3px 0;
     font-family: "Helvetica Neue", Helvetica, sans-serif;
     font-size: 12px;
     text-align: center;

@@ -1,5 +1,5 @@
 // Define SVG area dimensions
-var svgWidth = 400;
+var svgWidth = 480;
 var svgHeight = 500;
 
 // Define the chart's margins as an object
@@ -113,7 +113,7 @@ function statePlots() {
         // Append an SVG group element to the SVG area, create the left axis inside of it
         chartGroup2.append("g")
             .classed("axis-blue", true)
-            .attr("transform", "translate(280,0)")
+            .attr("transform", "translate(360,0)")
             .call(rightAxis);
 
         // Append an SVG group element to the SVG area, create the bottom axis inside of it
