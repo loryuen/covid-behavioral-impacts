@@ -1,5 +1,5 @@
 // Define SVG area dimensions
-var svgWidth = 480;
+var svgWidth = 530;
 var svgHeight = 500;
 
 // Define the chart's margins as an object
@@ -7,7 +7,7 @@ var margin = {
   top: 20,
   right: 80,
   bottom: 60,
-  left: 40
+  left: 80
 };
 
 // Define dimensions of the chart area
@@ -96,8 +96,8 @@ function statePlots() {
         // Set the domain for the xLinearScale function
         var yLinearScale = d3.scaleLinear()
             .range([chartHeight, 0])
-            // .domain([0, d3.max(stateData, data => data.positive)]);
-            .domain([0, 100000]);
+            .domain([0, d3.max(stateData, data => data.positive)+30000]);
+            // .domain([0, 100000]);
 
         // Create two new functions passing the scales in as arguments
         // These will be used to create the chart's axes
@@ -113,8 +113,18 @@ function statePlots() {
         // Append an SVG group element to the SVG area, create the left axis inside of it
         chartGroup2.append("g")
             .classed("axis-blue", true)
-            .attr("transform", "translate(360,0)")
+            .attr("transform", "translate(370,0)")
             .call(rightAxis);
+
+        // label y right axis
+        chartGroup2.append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("y", 0 + svgWidth - 110)
+            .attr("x", 0 - (chartHeight/2))
+            .attr("dy", "1em")
+            .style("text-anchor", "middle")
+            .style("stroke", "steelblue")
+            .text("Number of Cases - State level")
 
         // Append an SVG group element to the SVG area, create the bottom axis inside of it
         // Translate the bottom axis to the bottom of the page
@@ -314,6 +324,16 @@ function nationalView() {
         chartGroup.append("g")
             .attr("class", "axis-red")	
             .call(leftAxis);
+        
+        // label y left axis
+        chartGroup.append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("y", 0 - margin.left)
+            .attr("x", 0 - (chartHeight/2))
+            .attr("dy", "1em")
+            .style("text-anchor", "middle")
+            .style("stroke", "red")
+            .text("Number of Cases - National level")
 
         // Append an SVG group element to the SVG area, create the bottom axis inside of it
         // Translate the bottom axis to the bottom of the page
