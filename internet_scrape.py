@@ -31,6 +31,8 @@ def get_hours(month):
         year = month_list[1]
         days = calendar.monthrange(int(year),int(months.index(month))+1)[1]
     hours = days * 24
+    if days == 1:
+        hours = datetime.datetime.strftime(datetime.datetime.utcnow(),'%H')
     return hours
 
 # Use Chrome by default; uncomment first two lines/comment last two lines  to use Firefox.
@@ -128,11 +130,11 @@ def scrape_webex():
         hours.append(int(hours_month))
 
     for i in range(3):
-        webex_hours["hosts"].append(round(int(webex_days["hosts"][i]) / hours[i]))
         webex_hours["participants"].append(round(int(webex_days["participants"][i]) / hours[i]))
         webex_hours["meetings"].append(round(int(webex_days["meetings"][i]) / hours[i]))
         webex_hours["minutes"].append(round(int(webex_days["minutes"][i]) / hours[i]))
 
+    webex_hours["hosts"] = webex_days["hosts"]
     webex_hours["countries"] = webex_days["countries"]
     webex_hours["months"] = webex_days["months"]
     webex_hours["timestamp"] = webex_days["timestamp"]
