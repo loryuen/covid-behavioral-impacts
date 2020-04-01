@@ -123,7 +123,7 @@ function statePlots() {
             .attr("x", 0 - (chartHeight/2))
             .attr("dy", "1em")
             .style("text-anchor", "middle")
-            .style("stroke", "steelblue")
+            .style("fill", "steelblue")
             .text("Number of Cases - State level")
 
         // Append an SVG group element to the SVG area, create the bottom axis inside of it
@@ -189,7 +189,7 @@ function statePlots() {
                 .attr("cx", data => xTimeScale(data.date))
                 .attr("cy", data => yLinearScale(data.positive))
                 .attr("r", "2")
-                .attr("fill", "purple")
+                .attr("fill", "darkgrey")
                 .attr("stroke-width", "1")
                 .attr("stroke", "black");
 
@@ -332,7 +332,7 @@ function nationalView() {
             .attr("x", 0 - (chartHeight/2))
             .attr("dy", "1em")
             .style("text-anchor", "middle")
-            .style("stroke", "red")
+            .style("fill", "rgb(255, 153, 0)")
             .text("Number of Cases - National level")
 
         // Append an SVG group element to the SVG area, create the bottom axis inside of it
@@ -352,7 +352,7 @@ function nationalView() {
             // The drawLine function returns the instructions for creating the line for milesData
             .attr("d", drawLine(nationalData))
             .classed("line", true)
-            .attr("stroke", "red")
+            .attr("stroke", "rgb(255, 153, 0)")
             .attr("stroke-width", 2);
 
         // append circles
@@ -363,7 +363,7 @@ function nationalView() {
             .attr("cx", data => xTimeScale(data.date))
             .attr("cy", data => yLinearScale(data.positive))
             .attr("r", "2")
-            .attr("fill", "purple")
+            .attr("fill", "darkgrey")
             .attr("stroke-width", "1")
             .attr("stroke", "black");
 
