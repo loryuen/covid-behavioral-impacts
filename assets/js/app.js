@@ -434,8 +434,7 @@ d3.csv("assets/data/unemployment_claims.csv").then(function(data){
     // layout
     var layout = {
         width: 500,
-        height: 500
     };
     var claims_data = [trace1];
-    Plotly.newPlot('unemployment',claims_data,layout);
+    Plotly.newPlot('plot-unemp',claims_data,layout);
 });
