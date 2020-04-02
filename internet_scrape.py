@@ -30,9 +30,12 @@ def get_hours(month):
     else:
         year = month_list[1]
         days = calendar.monthrange(int(year),int(months.index(month))+1)[1]
-    hours = days * 24
-    if days == 1:
-        hours = datetime.datetime.strftime(datetime.datetime.utcnow(),'%H')
+
+    complete_days = int(days) - 1
+    current_hours = int(datetime.datetime.strftime(datetime.datetime.utcnow(),'%H'))
+    
+    hours = (complete_days * 24) + current_hours
+
     return hours
 
 # Use Chrome by default; uncomment first two lines/comment last two lines  to use Firefox.

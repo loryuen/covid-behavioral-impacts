@@ -8,8 +8,12 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Webex</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.1/d3-tip.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
-  <link rel="stylesheet" href="assets/css/style.css">
 </head>
 
 <body>
@@ -28,7 +32,7 @@
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
               <a class="dropdown-item" href="#">Unemployment</a>
               <a class="dropdown-item" href="#">Crime</a>
-              <a class="dropdown-item" href="templates/index.html#">Internet Usage</a>
+              <a class="dropdown-item" href="localhost:5000/">Internet Usage</a>
               <a class="dropdown-item" href="#">Stocks</a>
             </div>
           </li>
@@ -41,6 +45,7 @@
       <p><a class="btn btn-primary btn-lg" href="/webex" role="button">Scrape New Data</a></p>
       <h3>Most recent scrape timestamp: {{ webex_data.timestamp }} UTC</h3>
       <h5><a target="_blank" href="https://map.webex.com/">Source Data</a></h5>
+      <h6>This site is powered by Python, Flask, API, MongoDB, web scraping, and Javascript with the chart.js and D3 libraries.</h6>
     </div>
   </div>
   <div class="container">
@@ -78,7 +83,7 @@
             options: {
               tooltips: {
                 enabled: true,
-                mode: 'single',
+                mode: 'nearest',
                 callbacks: {
                   label: function(tooltipItems, data) {
                            return tooltipItems.yLabel + ' minutes';
@@ -122,7 +127,7 @@
             options: {
               tooltips: {
                 enabled: true,
-                mode: 'single',
+                mode: 'nearest',
                 callbacks: {
                   label: function(tooltipItems, data) {
                            return tooltipItems.yLabel + ' participants';
@@ -168,7 +173,7 @@
             options: {
               tooltips: {
                 enabled: true,
-                mode: 'single',
+                mode: 'nearest',
                 callbacks: {
                   label: function(tooltipItems, data) {
                            return tooltipItems.yLabel + ' hosts';
@@ -212,7 +217,7 @@
             options: {
               tooltips: {
                 enabled: true,
-                mode: 'single',
+                mode: 'nearest',
                 callbacks: {
                   label: function(tooltipItems, data) {
                            return tooltipItems.yLabel + ' meetings';
@@ -231,10 +236,6 @@
           <p>© Copyright 2020</p> 
       </footer>
   </div>
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.1/d3-tip.min.js"></script>
 </body>
 
 </html>
