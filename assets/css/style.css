@@ -21,13 +21,9 @@ body {
     margin-top: 20px;
     }
 
-/* #plot-cases {
-    margin-left: 100px;
-} */
 
 #map {
     height: 80vh;
-    width: 100vw;
 }
 
 .thumbnail {
@@ -84,7 +80,7 @@ path.line-state {
     display: inline-block;
     font-size: 12px;
     font-family: "Helvetica Neue", Helvetica, sans-serif;
-    margin-left: 14px;
+    margin-left: 10px;
     border-radius:10px;
 }
 
@@ -94,7 +90,7 @@ path.line-state {
     color: white;
     width: 130px;
     height: 25px;
-    margin-left: 60px;
+    margin-left: 10px;
     font-family: "Helvetica Neue", Helvetica, sans-serif;
 }
 
@@ -104,7 +100,7 @@ path.line-state {
     font-size: 12px;
     padding: 4px 10px;
     width: 120px;
-    margin-left: 60px;
+    margin-left: 10px;
     font-family: "Helvetica Neue", Helvetica, sans-serif;
     border-radius:10px;
 

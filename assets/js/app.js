@@ -96,7 +96,7 @@ function statePlots() {
         // Set the domain for the xLinearScale function
         var yLinearScale = d3.scaleLinear()
             .range([chartHeight, 0])
-            .domain([0, d3.max(stateData, data => data.positive)+30000]);
+            .domain([0, d3.max(stateData, data => data.positive)+100000]);
             // .domain([0, 100000]);
 
         // Create two new functions passing the scales in as arguments
@@ -118,6 +118,7 @@ function statePlots() {
 
         // label y right axis
         chartGroup2.append("text")
+            .attr("class", "y-label")
             .attr("transform", "rotate(-90)")
             .attr("y", 0 + svgWidth - 110)
             .attr("x", 0 - (chartHeight/2))
@@ -165,15 +166,7 @@ function statePlots() {
                 )
             updateCircles(selectedGroup)
         }
-            // TEST
-            // var stateLabel = d3.map(stateData, function(d) {
-            //     console.log(d.state)
-            //     return (d.state)})
-                        
-            // console.log(stateLabel)
             
-            // chartGroup2.append("text")
-            //     .text(stateLabel)
         function updateCircles(selectedGroup) {
             var dataFilter = stateData.filter(function(d) {
                 return d.state == selectedGroup
@@ -229,14 +222,15 @@ function statePlots() {
             });
         }
             
-        // } close function of update SelectedOption
         ///////////////////////////////////////////////////////////////////////
         // Event Listener - when button is changed, run updateChart function //
         ///////////////////////////////////////////////////////////////////////
 
         d3.select("#selState").on("change", function(d) {
+
             var selectedOption = d3.select(this).property("value")
             update(selectedOption);
+
         });
     });
 };
@@ -253,7 +247,9 @@ function clearPlots() {
 
 }
 
-//clear plots
+///////////////////////////////////////////
+// click handler for clear plots button //
+//////////////////////////////////////////
 d3.select("#selClear").on("click", clearPlots)
 
 //////////////////////////////////////////////////////////////////
@@ -263,6 +259,10 @@ d3.select("#selClear").on("click", clearPlots)
 //////////////////////////////////
 function handleButtonSelect() {
     d3.event.preventDefault();
+
+    // // remove tick labels and y-label so it doesn't pile on top of each other making text hard to read
+    // d3.selectAll(".tick").remove();
+    // d3.selectAll(".y-label").remove();
 
     var national = d3.select('#selButton').node().value;
     console.log(national);
@@ -327,6 +327,7 @@ function nationalView() {
         
         // label y left axis
         chartGroup.append("text")
+            .attr("class", "y-label")
             .attr("transform", "rotate(-90)")
             .attr("y", 0 - margin.left)
             .attr("x", 0 - (chartHeight/2))
