@@ -11,9 +11,6 @@ var myMap = L.map("map", {
     accessToken: API_KEY
   }).addTo(myMap);
 
-
-// console.log(states.forEach(d=> console.log(d.Latitude)))
-
 // // Define a markerSize function that will give each city a different radius based on its population
 function markerSize(casesCount) {
     var size = 0;
@@ -34,9 +31,7 @@ function markerSize(casesCount) {
     }
 
     return size
-    // return casesCount * 20;
-//switches
-    };
+};
 
 // number formatter for commas
 var numberFormat = function(d) {

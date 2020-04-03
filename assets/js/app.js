@@ -24,10 +24,6 @@ var svg = d3.select("#plot-cases")
 var chartGroup = svg.append("g")
   .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
-// Append a second group area for state plot to differentiate from national plot and so d3-tip can bind to the correct line plot
-// var chartGroup2 = svg.append("g")
-//   .attr("transform", `translate(${margin.left}, ${margin.top})`);
-
 // Configure a parseTime function which will return a new Date object from a string
 var parseTime = d3.timeParse("%Y%m%d");
 
@@ -100,8 +96,6 @@ function statePlots() {
             // .domain([0, 100000]);
 
         // Create two new functions passing the scales in as arguments
-        // These will be used to create the chart's axes
-        // var bottomAxis = d3.axisBottom(xTimeScale).tickFormat(d3.timeFormat("%d-%b"));
         var rightAxis = d3.axisRight(yLinearScale);
 
         // Configure a drawLine function which will use our scales to plot the line's points
@@ -127,26 +121,12 @@ function statePlots() {
             .style("fill", "steelblue")
             .text("Number of Cases - State level")
 
-        // Append an SVG group element to the SVG area, create the bottom axis inside of it
-        // Translate the bottom axis to the bottom of the page
-        // chartGroup.append("g")
-        //     .classed("axis", true)
-        //     .attr("transform", "translate(0, " + chartHeight + ")")
-        //     .call(bottomAxis)
-        //     .selectAll("text") // set x axis labels at an angle
-        //         .style("text-anchor", "end")
-        //         .attr("dx", "-.8em")
-        //         .attr("dy", ".15em")
-        //         .attr("transform", "rotate(-65)");
-
         // Append an SVG path and plot its points using the line function
         var line = chartGroup2.append("path")
             .attr("d", drawLine (stateData[0]) )
             .classed("line", true)
             .style("stroke", "steelblue")
             .attr("stroke-width", 2)
-
-        
 
         ///////////////////////////////
         // function to update chart //
@@ -251,8 +231,6 @@ function clearPlots() {
 // click handler for clear plots button //
 //////////////////////////////////////////
 d3.select("#selClear").on("click", clearPlots)
-
-//////////////////////////////////////////////////////////////////
 
 //////////////////////////////////
 // national view button handler //

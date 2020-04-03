@@ -6,8 +6,6 @@
 body {
     position: relative;
     min-height: 100vh;
-    /* padding: 0;
-    margin: 0; */
     }
     
 .footer {
@@ -20,7 +18,6 @@ body {
     text-align: center;
     margin-top: 20px;
     }
-
 
 #map {
     height: 80vh;
