@@ -1,4 +1,3 @@
-
 Plotly.d3.csv('assets/data/unemployment.csv', function(err, rows){
     function unpack(rows, key) {
         return rows.map(function(row) { return row[key]; });
@@ -13,9 +12,9 @@ var data = [{
             zmin: 0,
             zmax: 400000,
             colorscale: [
-              [0, 'rgb(255,204,204)'], [0.2, 'rgb(255,229,204)'],
-              [0.4, 'rgb(255,102,102)'], [0.6, 'rgb(255,51,51)'],
-              [0.8, 'rgb(255,0,0)'], [1, 'rgb(204,0,0)']
+              [0, 'rgb(204,255,255)'], [0.2, 'rgb(153,153,255)'],
+              [0.4, 'rgb(102,102,255)'], [0.6, 'rgb(51,51,255)'],
+              [0.8, 'rgb(0,0,255)'], [1, 'rgb(0,0,204)']
             ],
           colorbar: {
             title: 'Thousands',
