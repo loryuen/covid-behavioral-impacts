@@ -92,11 +92,7 @@ function statePlots() {
         // Set the domain for the xLinearScale function
         var yLinearScale = d3.scaleLinear()
             .range([chartHeight, 0])
-<<<<<<< HEAD
-            .domain([0, d3.max(stateData, data => data.positive)+30000]);
-=======
             .domain([0, d3.max(stateData, data => data.positive)+100000]);
->>>>>>> lorelle
             // .domain([0, 100000]);
 
         // Create two new functions passing the scales in as arguments
@@ -306,14 +302,12 @@ function nationalView() {
         // Append an SVG group element to the SVG area, create the left axis inside of it
         chartGroup.append("g")
             .attr("class", "axis-red")	
-<<<<<<< HEAD
             .call(leftAxis)
             .selectAll("text")	
                 .style("text-anchor", "end")
                 .attr("dx", "-.3em")
                 .attr("dy", ".01em")
-                .attr("transform", "rotate(-40)");
-=======
+                .attr("transform", "rotate(-40)")
             .call(leftAxis);
         
         // label y left axis
@@ -326,7 +320,6 @@ function nationalView() {
             .style("text-anchor", "middle")
             .style("fill", "rgb(255, 153, 0)")
             .text("Number of Cases - National level")
->>>>>>> lorelle
 
         // Append an SVG group element to the SVG area, create the bottom axis inside of it
         // Translate the bottom axis to the bottom of the page
