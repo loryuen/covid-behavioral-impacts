@@ -1,0 +1,51 @@
+code,state,category,claims
+AL,Alabama,state,10892
+AK,Alaska,state,7847
+AZ,Arizona,state,29348
+AR,Arkansas,state,9275
+CA,California,state,186333
+CO,Colorado,state,19774
+CT,Connecticut,state,25100
+DE,Delaware,state,10776
+FL,Florida,state,74313
+GA,Georgia,state,12140
+HI,Hawaii,state,8815
+ID,Idaho,state,13586
+IL,Illinois,state,114114
+IN,Indiana,state,59755
+IA,Iowa,state,40952
+KS,Kansas,state,23563
+KY,Kentucky,state,49023
+LA,Louisiana,state,72438
+ME,Maine,state,21459
+MD,Maryland,state,42981
+MA,Massachusetts,state,148452
+MI,Michigan,state,128006
+MN,Minnesota,state,115773
+MS,Mississippi,state,5519
+MO,Missouri,state,42246
+MT,Montana,state,15349
+NE,Nebraska,state,15700
+NV,Nevada,state,92298
+NH,New Hampshire,state,29379
+NJ,New Jersey,state,115815
+NM,New Mexico,state,18105
+NY,New York,state,79999
+NC,North Carolina,state,94083
+ND,North Dakota,state,5662
+OH,Ohio,state,196309
+OK,Oklahoma,state,21926
+OR,Oregon,state,30054
+PA,Pennsylvania,state,377451
+RI,Rhode Island,state,35847
+SC,South Carolina,state,31826
+SD,South Dakota,state,1761
+TN,Tennessee,state,38077
+TX,Texas,state,155426
+UT,Utah,state,19690
+VT,Vermont,state,3784
+VA,Virginia,state,46277
+WA,Washington,state,129909
+WV,West Virginia,state,3536
+WI,Wisconsin,state,51031
+WY,Wyoming,state,3653
