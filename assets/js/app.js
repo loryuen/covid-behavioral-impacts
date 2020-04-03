@@ -1,5 +1,5 @@
 // Define SVG area dimensions
-var svgWidth = 400;
+var svgWidth = 530;
 var svgHeight = 500;
 
 // Define the chart's margins as an object
@@ -7,7 +7,7 @@ var margin = {
   top: 20,
   right: 80,
   bottom: 60,
-  left: 40
+  left: 80
 };
 
 // Define dimensions of the chart area
@@ -23,10 +23,6 @@ var svg = d3.select("#plot-cases")
 // Append a group area, then set its margins (for national plot)
 var chartGroup = svg.append("g")
   .attr("transform", `translate(${margin.left}, ${margin.top})`);
-
-// Append a second group area for state plot to differentiate from national plot and so d3-tip can bind to the correct line plot
-// var chartGroup2 = svg.append("g")
-//   .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
 // Configure a parseTime function which will return a new Date object from a string
 var parseTime = d3.timeParse("%Y%m%d");
@@ -96,12 +92,14 @@ function statePlots() {
         // Set the domain for the xLinearScale function
         var yLinearScale = d3.scaleLinear()
             .range([chartHeight, 0])
+<<<<<<< HEAD
             .domain([0, d3.max(stateData, data => data.positive)+30000]);
+=======
+            .domain([0, d3.max(stateData, data => data.positive)+100000]);
+>>>>>>> lorelle
             // .domain([0, 100000]);
 
         // Create two new functions passing the scales in as arguments
-        // These will be used to create the chart's axes
-        // var bottomAxis = d3.axisBottom(xTimeScale).tickFormat(d3.timeFormat("%d-%b"));
         var rightAxis = d3.axisRight(yLinearScale);
 
         // Configure a drawLine function which will use our scales to plot the line's points
@@ -113,21 +111,20 @@ function statePlots() {
         // Append an SVG group element to the SVG area, create the left axis inside of it
         chartGroup2.append("g")
             .classed("axis-blue", true)
-            .attr("transform", "translate(280,0)")
+            .attr("transform", "translate(370,0)")
             .call(rightAxis);
             
 
-        // Append an SVG group element to the SVG area, create the bottom axis inside of it
-        // Translate the bottom axis to the bottom of the page
-        // chartGroup.append("g")
-        //     .classed("axis", true)
-        //     .attr("transform", "translate(0, " + chartHeight + ")")
-        //     .call(bottomAxis)
-        //     .selectAll("text") // set x axis labels at an angle
-        //         .style("text-anchor", "end")
-        //         .attr("dx", "-.8em")
-        //         .attr("dy", ".15em")
-        //         .attr("transform", "rotate(-65)");
+        // label y right axis
+        chartGroup2.append("text")
+            .attr("class", "y-label")
+            .attr("transform", "rotate(-90)")
+            .attr("y", 0 + svgWidth - 110)
+            .attr("x", 0 - (chartHeight/2))
+            .attr("dy", "1em")
+            .style("text-anchor", "middle")
+            .style("fill", "steelblue")
+            .text("Number of Cases - State level")
 
         // Append an SVG path and plot its points using the line function
         var line = chartGroup2.append("path")
@@ -135,8 +132,6 @@ function statePlots() {
             .classed("line", true)
             .style("stroke", "steelblue")
             .attr("stroke-width", 2)
-
-        
 
         ///////////////////////////////
         // function to update chart //
@@ -156,15 +151,7 @@ function statePlots() {
                 )
             updateCircles(selectedGroup)
         }
-            // TEST
-            // var stateLabel = d3.map(stateData, function(d) {
-            //     console.log(d.state)
-            //     return (d.state)})
-                        
-            // console.log(stateLabel)
             
-            // chartGroup2.append("text")
-            //     .text(stateLabel)
         function updateCircles(selectedGroup) {
             var dataFilter = stateData.filter(function(d) {
                 return d.state == selectedGroup
@@ -180,7 +167,7 @@ function statePlots() {
                 .attr("cx", data => xTimeScale(data.date))
                 .attr("cy", data => yLinearScale(data.positive))
                 .attr("r", "2")
-                .attr("fill", "purple")
+                .attr("fill", "darkgrey")
                 .attr("stroke-width", "1")
                 .attr("stroke", "black");
 
@@ -220,14 +207,15 @@ function statePlots() {
             });
         }
             
-        // } close function of update SelectedOption
         ///////////////////////////////////////////////////////////////////////
         // Event Listener - when button is changed, run updateChart function //
         ///////////////////////////////////////////////////////////////////////
 
         d3.select("#selState").on("change", function(d) {
+
             var selectedOption = d3.select(this).property("value")
             update(selectedOption);
+
         });
     });
 };
@@ -244,16 +232,20 @@ function clearPlots() {
 
 }
 
-//clear plots
+///////////////////////////////////////////
+// click handler for clear plots button //
+//////////////////////////////////////////
 d3.select("#selClear").on("click", clearPlots)
-
-//////////////////////////////////////////////////////////////////
 
 //////////////////////////////////
 // national view button handler //
 //////////////////////////////////
 function handleButtonSelect() {
     d3.event.preventDefault();
+
+    // // remove tick labels and y-label so it doesn't pile on top of each other making text hard to read
+    // d3.selectAll(".tick").remove();
+    // d3.selectAll(".y-label").remove();
 
     var national = d3.select('#selButton').node().value;
     console.log(national);
@@ -314,12 +306,27 @@ function nationalView() {
         // Append an SVG group element to the SVG area, create the left axis inside of it
         chartGroup.append("g")
             .attr("class", "axis-red")	
+<<<<<<< HEAD
             .call(leftAxis)
             .selectAll("text")	
                 .style("text-anchor", "end")
                 .attr("dx", "-.3em")
                 .attr("dy", ".01em")
                 .attr("transform", "rotate(-40)");
+=======
+            .call(leftAxis);
+        
+        // label y left axis
+        chartGroup.append("text")
+            .attr("class", "y-label")
+            .attr("transform", "rotate(-90)")
+            .attr("y", 0 - margin.left)
+            .attr("x", 0 - (chartHeight/2))
+            .attr("dy", "1em")
+            .style("text-anchor", "middle")
+            .style("fill", "rgb(255, 153, 0)")
+            .text("Number of Cases - National level")
+>>>>>>> lorelle
 
         // Append an SVG group element to the SVG area, create the bottom axis inside of it
         // Translate the bottom axis to the bottom of the page
@@ -338,7 +345,7 @@ function nationalView() {
             // The drawLine function returns the instructions for creating the line for milesData
             .attr("d", drawLine(nationalData))
             .classed("line", true)
-            .attr("stroke", "red")
+            .attr("stroke", "rgb(255, 153, 0)")
             .attr("stroke-width", 2);
 
         // append circles
@@ -349,7 +356,7 @@ function nationalView() {
             .attr("cx", data => xTimeScale(data.date))
             .attr("cy", data => yLinearScale(data.positive))
             .attr("r", "2")
-            .attr("fill", "purple")
+            .attr("fill", "darkgrey")
             .attr("stroke-width", "1")
             .attr("stroke", "black");
 
