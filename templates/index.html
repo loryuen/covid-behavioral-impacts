@@ -1,0 +1,241 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Webex</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.1/d3-tip.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+</head>
+
+<body>
+<!-- navigation bar -->
+  <nav class="navbar navbar-expand-lg navbar-light" style="background-color: lightcoral">
+      <a class="navbar-brand" href="index.html">COVID-19: Behavioral Impacts</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <!-- navbar buttons -->
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ml-auto"> 
+          <!-- dropdown -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Behavioral Impacts</a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="#">Unemployment</a>
+              <a class="dropdown-item" href="#">Crime</a>
+              <a class="dropdown-item" href="localhost:5000/">Internet Usage</a>
+              <a class="dropdown-item" href="#">Stocks</a>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  <div class="container">
+    <div class="jumbotron text-center">
+      <h1>COVID-19 and Working from Home with Webex</h1>
+      <p><a class="btn btn-primary btn-lg" href="/webex" role="button">Scrape New Data</a></p>
+      <h3>Most recent scrape timestamp: {{ webex_data.timestamp }} UTC</h3>
+      <h5><a target="_blank" href="https://map.webex.com/">Source Data</a></h5>
+      <h6>This site is powered by Python, Flask, API, MongoDB, web scraping, and Javascript with the chart.js and D3 libraries.</h6>
+    </div>
+  </div>
+  <div class="container">
+    <div class="row" id="hosts-participants">
+      <div class="col-md-6">
+        <h2 class="heading" align="center">Minutes</h2>
+        <canvas id="minutes-chart" width="600" height="400"></canvas>
+        <script>
+          var minutesChartData = {
+            labels : [{% for item in webex_data.months %}
+                       "{{item}}",
+                      {% endfor %}],
+            datasets : [{
+                label: "Number of Minutes per Hour",
+                fill: true,
+                backgroundColor: ["blue","red","rgba(75,192,192,0.4)"],
+                borderColor: "rgba(75,192,192,1)",
+                pointHoverBackgroundColor: "rgba(75,192,192,1)",
+                pointHoverBorderColor: "rgba(220,220,220,1)",
+                pointHoverBorderWidth: 2,
+                data : [{% for item in webex_data.minutes %}
+                          {{item}},
+                        {% endfor %}],
+            }]
+          }
+
+          // get chart canvas
+          var ctx = document.getElementById("minutes-chart");
+
+          // create the chart using the chart canvas
+          var minutesChart = new Chart(ctx, {
+            responsive: true,
+            type: 'bar',
+            data: minutesChartData,
+            options: {
+              tooltips: {
+                enabled: true,
+                mode: 'nearest',
+                callbacks: {
+                  label: function(tooltipItems, data) {
+                           return tooltipItems.yLabel + ' minutes';
+                  }
+                }
+              },
+            },
+          });
+        </script>
+      </div>
+      <div class="col-md-6">
+        <h2 class="heading" align="center">Participants</h2>
+        <canvas id="participants-chart" width="600" height="400"></canvas>
+        <script>
+          var participantsChartData = {
+            labels : [{% for item in webex_data.months %}
+                       "{{item}}",
+                      {% endfor %}],
+            datasets : [{
+                label: "Number of Participants per Hour",
+                fill: true,
+                backgroundColor: ["blue","red","rgba(75,192,192,0.4)"],
+                borderColor: "rgba(75,192,192,1)",
+                pointHoverBackgroundColor: "rgba(75,192,192,1)",
+                pointHoverBorderColor: "rgba(220,220,220,1)",
+                pointHoverBorderWidth: 2,
+                data : [{% for item in webex_data.participants %}
+                          {{item}},
+                        {% endfor %}],
+            }]
+          }
+
+          // get chart canvas
+          var ctx = document.getElementById("participants-chart");
+
+          // create the chart using the chart canvas
+          var participantsChart = new Chart(ctx, {
+            responsive: true,
+            type: 'bar',
+            data: participantsChartData,
+            options: {
+              tooltips: {
+                enabled: true,
+                mode: 'nearest',
+                callbacks: {
+                  label: function(tooltipItems, data) {
+                           return tooltipItems.yLabel + ' participants';
+                  }
+                }
+              },
+            },
+          });
+        </script>
+      </div>
+    </div>
+    <div class="row" id="hosts-meetings">
+      <div class="col-md-6">
+        <h2 class="heading" align="center">Hosts</h2>
+        <canvas id="hosts-chart" width="600" height="400"></canvas>
+        <script>
+          var hostsChartData = {
+            labels : [{% for item in webex_data.months %}
+                       "{{item}}",
+                      {% endfor %}],
+            datasets : [{
+                label: "Number of Hosts per Hour",
+                fill: true,
+                backgroundColor: ["blue","red","rgba(75,192,192,0.4)"],
+                borderColor: "rgba(75,192,192,1)",
+                pointHoverBackgroundColor: "rgba(75,192,192,1)",
+                pointHoverBorderColor: "rgba(220,220,220,1)",
+                pointHoverBorderWidth: 2,
+                data : [{% for item in webex_data.hosts %}
+                          {{item}},
+                        {% endfor %}],
+            }]
+          }
+
+          // get chart canvas
+          var ctx = document.getElementById("hosts-chart");
+
+          // create the chart using the chart canvas
+          var hostsChart = new Chart(ctx, {
+            responsive: true,
+            type: 'bar',
+            data: hostsChartData,
+            options: {
+              tooltips: {
+                enabled: true,
+                mode: 'nearest',
+                callbacks: {
+                  label: function(tooltipItems, data) {
+                           return tooltipItems.yLabel + ' hosts';
+                  }
+                }
+              },
+            },
+          });
+        </script>
+      </div>
+      <div class="col-md-6">
+        <h2 class="heading" align="center">Meetings</h2>
+        <canvas id="meetings-chart" width="600" height="400"></canvas>
+        <script>
+          var meetingsChartData = {
+            labels : [{% for item in webex_data.months %}
+                       "{{item}}",
+                      {% endfor %}],
+            datasets : [{
+                label: "Number of Meetings per Hour",
+                fill: true,
+                backgroundColor: ["blue","red","rgba(75,192,192,0.4)"],
+                borderColor: "rgba(75,192,192,1)",
+                pointHoverBackgroundColor: "rgba(75,192,192,1)",
+                pointHoverBorderColor: "rgba(220,220,220,1)",
+                pointHoverBorderWidth: 2,
+                data : [{% for item in webex_data.meetings %}
+                          {{item}},
+                        {% endfor %}],
+            }]
+          }
+
+          // get chart canvas
+          var ctx = document.getElementById("meetings-chart");
+
+          // create the chart using the chart canvas
+          var meetingsChart = new Chart(ctx, {
+            responsive: true,
+            type: 'bar',
+            data: meetingsChartData,
+            options: {
+              tooltips: {
+                enabled: true,
+                mode: 'nearest',
+                callbacks: {
+                  label: function(tooltipItems, data) {
+                           return tooltipItems.yLabel + ' meetings';
+                  }
+                }
+              },
+            },
+          });
+        </script>
+      </div>
+    </div>
+  </div>
+
+  <div class='footer'>
+      <footer>
+          <p>© Copyright 2020</p> 
+      </footer>
+  </div>
+</body>
+
+</html>

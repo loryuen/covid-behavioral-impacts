@@ -1,0 +1,107 @@
+/* stylesheet */
+.container {
+    padding-bottom: 90px;
+    }
+
+body {
+    position: relative;
+    min-height: 100vh;
+    }
+    
+.footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding-top: 18px;
+    background: lightcoral;
+    text-align: center;
+    margin-top: 20px;
+    }
+
+#map {
+    height: 80vh;
+}
+
+.thumbnail {
+    max-width: 100%;
+    max-height: 100%;
+}
+.spacer {
+    padding: 25px 0 0 0;
+    }
+
+path.line {
+    fill: none;
+    stroke:rgb(255, 153, 0);
+}
+
+path.line-state {
+    fill: none;
+    stroke: blue;
+}
+
+.axis-red text {
+    fill: rgb(255, 153, 0);
+}
+
+.axis-blue text {
+    fill: steelblue;
+}
+
+.sub-text {
+    font-size: 14px;
+}
+
+.tooltip {
+    position: absolute;
+    width: 200px;
+    height: 76px;
+    padding: 3px 0;
+    font-family: "Helvetica Neue", Helvetica, sans-serif;
+    font-size: 12px;
+    text-align: center;
+    color: black;
+    background: lightgrey;
+    border: 0;
+    border-radius: 10px;
+}
+
+#selButton {
+    background-color:rgb(255, 153, 0); 
+    border: black;
+    color: white;
+    padding: 4px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    font-family: "Helvetica Neue", Helvetica, sans-serif;
+    margin-left: 10px;
+    border-radius:10px;
+}
+
+#selState {
+    background-color: steelblue;
+    font-size: 12px;
+    color: white;
+    width: 130px;
+    height: 25px;
+    margin-left: 10px;
+    font-family: "Helvetica Neue", Helvetica, sans-serif;
+}
+
+#selClear {
+    background-color: rgb(148, 143, 143);
+    color: white;
+    font-size: 12px;
+    padding: 4px 10px;
+    width: 120px;
+    margin-left: 10px;
+    font-family: "Helvetica Neue", Helvetica, sans-serif;
+    border-radius:10px;
+
+}
+.sub-title {
+    color: black;
+}

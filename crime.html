@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <html> 
+    
+  
+    <body> 
+       <div id="includedContent"></div>
+    </body> 
+  </html>
+<head>
+  <meta charset="UTF-8">
+  <!-- mobile responsiveness -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- leaflet responsiveness -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+  <title>COVID-19: Behavioral Impacts</title>
+  <!-- link to bootstrap -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <!-- links to Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.3/dist/leaflet.css"
+  integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ=="
+  crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.3.3/dist/leaflet.js"
+  integrity="sha512-tAGcCfR4Sc5ZP5ZoVz0quoZDYX5aCtEm/eu1KhSLj2c9eFrylXZknQYmxUssFaVJKvvc0dJQixhGjG2yXWiV9Q=="
+  crossorigin=""></script>
+  <!-- link to stylesheets -->
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body>
+<!-- navigation bar -->
+    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: lightcoral">
+        <a class="navbar-brand" href="index.html">COVID-19: Behavioral Impacts</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <!-- navbar buttons -->
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav ml-auto"> 
+            <!-- dropdown -->
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Behavioral Impacts</a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="crime.html">Crime</a>
+                <a class="dropdown-item" href="unemployment.html">Unemployment</a>
+                <a class="dropdown-item" href="http://localhost:5000#">Internet Usage</a>
+                <a class="dropdown-item" href="stocks.html">Stocks</a>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+  <!-- container -->
+  <div class="container">
+    <!-- top row spacer -->
+    <div class="row spacer">
+            <div class="col-12 top-spacer"></div>
+    </div>
+
+    <!-- main content - first row -->
+    <div class="row">
+      <div class="col-xs-12 col-md-12">
+        <h1>COVID-19: The rise of COVID-19 cases and reported crime numbers in major cities.</h1>
+        <p align="justify">
+                While many law enforcement agencies predicted a rise in crime during the COVID-19 outbreak due to unemployment, closed businesses, increased demand on law enforcement, release of prisoners to reduce spread, and a number of other factors; in some US cities, this has not been the case. Data pulled from portals for the cities of <a href="https://data.lacity.org/A-Safe-City/Crime-Data-from-2020-to-Present/2nrs-mtv8" target="_blank">Los Angeles</a></a>, <a href="https://data.cityofchicago.org/Public-Safety/Crimes-2001-to-present/ijzp-q8t2" target="_blank">Chicago</a></a>, and <a href="https://www.atlantapd.org/i-want-to/crime-data-downloads" target="_blank">Atlanta</a></a> and the New York Times regional <a href="https://github.com/nytimes/covid-19-data" target="_blank">COVID-19 database</a></a>.
+            </p>
+            <div class="embed-responsive embed-responsive-16by9">
+              <iframe class="embed-responsive-item" src="assets/data/crime/atlanta.html"></iframe>
+            </div>
+            <div class="embed-responsive embed-responsive-16by9">
+              <iframe class="embed-responsive-item" src="assets/data/crime/chicago.html"></iframe>
+            </div>
+            <div class="embed-responsive embed-responsive-16by9">
+              <iframe class="embed-responsive-item" src="assets/data/crime/losangeles.html"></iframe>
+            </div>
+      </div>
+    </div>
+
+  
+
+
+  <!-- Footer-->
+    <div class='footer' style="background-color: lightcoral">
+        <footer>
+            <p>© Copyright 2020</p> 
+        </footer>
+    </div>
+
+    <!-- bootstrap js -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+  <!-- js scripts -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.1/d3-tip.min.js"></script>
+
+
+</body>
+
+</html>
