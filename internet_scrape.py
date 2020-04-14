@@ -79,16 +79,16 @@ def scrape_webex():
             iframe_html = iframe.html
             iframe_soup = bs(iframe_html, "html.parser")
             months.append(iframe_soup.find('span', id=month_id).get_text())
-            hosts_commas.append(re.search('title=\"(.*)\"', str(iframe_soup.find('span', id='hostData'))).group(1))
-            participants_commas.append(re.search('title=\"(.*)\"', str(iframe_soup.find('span', id='participantData'))).group(1))
-            countries.append(re.search('title=\"(.*)\"', str(iframe_soup.find('span', id='countryData'))).group(1))
-            meetings_commas.append(re.search('title=\"(.*)\"', str(iframe_soup.find('span', id='meetingData'))).group(1))
+            hosts_commas.append(re.search('title=\"(.*)\"', str(iframe_soup.find('span', class_='hostData'))).group(1))
+            participants_commas.append(re.search('title=\"(.*)\"', str(iframe_soup.find('span', class_='participantData'))).group(1))
+            countries.append(re.search('title=\"(.*)\"', str(iframe_soup.find('span', class_='countryData'))).group(1))
+            meetings_commas.append(re.search('title=\"(.*)\"', str(iframe_soup.find('span', class_='meetingData'))).group(1))
             
             # The minutes are in reverse order, so we have to turn them around.
             mins = []
             num = 11
             while num > 0:
-                a = str(iframe_soup.find('div', id='num' + str(num)))
+                a = str(iframe_soup.find('div', class_='static num' + str(num)))
                 b = re.search(r'<span>(\d*)', a).group(1)             
                 mins.append(b)
                 num = num - 1
